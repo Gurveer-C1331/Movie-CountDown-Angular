@@ -1,0 +1,31 @@
+#info-text {
+    display: block;
+    width: 80vw;
+    padding: 3em 1em;
+    margin: auto;
+}
+  
+#info-text span {
+    display: block;
+    text-align: center;
+    color: #666666;
+    font-size: .95em;
+}
+
+@media (min-width: 2000px) {
+    #info-text {
+        font-size: 1.3em;
+    }
+}
+
+@media (max-width: 400px) {
+    #info-text {
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 350px) {
+    #info-text {
+        font-size: 0.8em;
+    }
+  }
