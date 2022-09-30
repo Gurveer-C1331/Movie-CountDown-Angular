@@ -1,0 +1,29 @@
+name: CI - App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          
+      - name: Prepare and deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          TMDB_URL: ${{ secrets.TMDB_URL }}
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+        run: |
+          npm install
+          npm run config
+          npm run ng -- deploy
