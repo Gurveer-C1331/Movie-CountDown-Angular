@@ -98,6 +98,14 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "baseHref": "/Movie-CountDown-Angular/",
+            "name": "Gurveer-C1331",
+            "email": "g@email.com"
+          }
         }
       }
     }
