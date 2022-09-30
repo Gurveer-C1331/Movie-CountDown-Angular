@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { trigger, state, style, animate, transition, keyframes } from '@angular/animations';
 
 import { CountDownCard, EpisodeInfo } from './model/count-down-card';
+import { HomeService } from '../home.service';
 
 @Component({
     selector: 'app-count-down-card',
@@ -16,10 +16,18 @@ export class CountDownCardComponent implements OnInit {
     /** card's media type */
     public mediaType: string = "TV Series";
 
-    constructor() { }
+    constructor(private homeService: HomeService) { }
 
     ngOnInit(): void {
 
+        this.homeService.getMovieData().subscribe(
+            data => {
+                console.log(data);
+            },
+            error => {
+                console.log(error);
+            }
+        )
     }
 
     /**
