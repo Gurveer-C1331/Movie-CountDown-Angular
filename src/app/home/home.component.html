@@ -1,7 +1,13 @@
 <div class="container">
-    <app-new-user-content *ngIf="hasCollection"></app-new-user-content>
+    <app-new-user-content *ngIf="isEmpty(movieCollection) && isEmpty(tvCollection)"></app-new-user-content>
 
+    <app-loader *ngIf="isLoading"></app-loader>
     <div class="main-container">
-        <app-count-down-card></app-count-down-card>
+        <ng-container *ngFor="let movie of movieCollection">
+            <app-movie-card [movieId]="convertID(movie)" (removed)="onRemoveMovie($event)"></app-movie-card>
+        </ng-container>
+        <ng-container *ngFor="let tv of tvCollection">
+            <app-tv-card [tvId]="convertID(tv)" (removed)="onRemoveTV($event)"></app-tv-card>
+        </ng-container>
     </div>
 </div>

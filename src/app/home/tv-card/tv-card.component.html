@@ -1,0 +1,60 @@
+<ng-container *ngIf="tvData && tvData.display_episode">
+    <div class="card-container" [ngStyle]="{'background-image': 'url(https://image.tmdb.org/t/p/w500' + tvData.poster_path + ')'}">
+        <div class="image-container">
+            <img *ngIf="tvData.poster_path; else elsePoster" src="https://image.tmdb.org/t/p/w500{{ tvData.poster_path }}" alt="" id="image">
+            <ng-template #elsePoster><img></ng-template>
+        </div>
+
+        <div class="text-container">
+            <div class="top no-hover">
+                <span class="title-text" id="title-{{ tvData.id }}" [ngClass]="enableSlideText('#title-'+tvData.id) === true ? 'animate' : ''">
+                    {{ tvData.name }}</span><br>
+                
+                <span class="episode-text">
+                    <strong class="episodeNum">S{{ tvData.display_episode.season_number }}E{{ tvData.display_episode.episode_number }}: </strong>
+                    {{ tvData.display_episode.name }}
+                </span><br>
+
+                <span *ngIf="networks[0]; else elseNetwork" class="studio-text" id="studio-{{ tvData.id }}" [ngClass]="enableSlideText('#studio-'+tvData.id) === true ? 'animate' : ''">
+                    {{ networks[0].name }}</span>
+                <ng-template #elseNetwork><span></span></ng-template><br>
+            </div>
+            <div class="middle no-hover">
+                <span class="release-date" style="display: none">{{ tvData.display_episode.air_date }}</span>
+                <table>
+                    <tbody>
+                        <tr>
+                            <ng-container [ngSwitch]="daysTilRelease === 'Released' ? 1 : (daysTilRelease.includes(':') ? 2 : -1)">
+                                <ng-container *ngSwitchCase="1">
+                                    <td class="days"
+                                    style="padding-bottom:.2em; padding-top:.2em; font-size:2em;">
+                                    <span>{{ daysTilRelease }}</span></td>
+                                </ng-container>
+                                <ng-container *ngSwitchCase="2">
+                                    <td class="days"
+                                        style="padding-bottom:.2em; padding-top:.2em;">
+                                        <span>{{ daysTilRelease }}</span></td>
+                                </ng-container>
+                                <ng-container *ngSwitchDefault>
+                                    <td class="days"><span>{{ daysTilRelease }}</span></td>
+                                    <td class="days-text"><span>Days</span></td>
+                                </ng-container>
+                            </ng-container>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="date-text">
+                                <img src="assets/calendar.svg" alt="">
+                                <span>{{ releaseDate.toLocaleString('en-US', {dateStyle: 'medium'}).replace(',', '') }}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="bottom no-hover">
+                <span class="media-text">TV Series</span>
+                <span class="id" style="display: none">{{ tvId }}</span>
+            </div>
+            <img class="remove-button" src="assets/x.svg" alt="" (click)="removed.emit(tvId)">
+        </div>    
+    </div>
+</ng-container>
