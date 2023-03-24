@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
 import { interval } from 'rxjs';
 
 import { HomeService } from '../home.service';
@@ -11,14 +11,14 @@ import { MovieCardData, ProductionCompany } from './model/movie-card';
 })
 export class MovieCardComponent implements OnInit {
 
-    /** Movie id. */
-    @Input() public movieId: number;
+    /** Movie card data. */
+    @Input() public movieData: MovieCardData;
 
     /** Event emitter when remove button is clicked.  */
     @Output() public removed = new EventEmitter<number>();
 
-    /** Movie card data. */
-    public movieData: MovieCardData;
+    /** Movie id. */
+    public movieId: number;
 
     /** Movie's production companies. */
     public productionCompanies: ProductionCompany[];
@@ -29,37 +29,46 @@ export class MovieCardComponent implements OnInit {
     /** Release date. */
     public releaseDate: Date;
 
+    /** if title text overflows. */
+    public isTitleLong: boolean = false;
+
+    /** if studio text overflows. */
+    public isStudioTextLong: boolean = false;
+
     /** Refresh count down. */
     private refreshCountDown: any;
 
     /**
-     * 
-     * @param homeService 
+     * @param cd
      */
-    constructor(private homeService: HomeService) { }
+    constructor(private cd: ChangeDetectorRef) { }
 
     ngOnInit(): void {
 
-        this.homeService.getMovieData(this.movieId).subscribe(
-            data => {
-                console.log(data);
-
-                this.movieData = data;
-                this.productionCompanies = data.production_companies;
-                this.releaseDate = new Date(data.release_date+"T00:00:00");
-                this.setTime(this.releaseDate);
-            },
-            error => {
-                console.log(error);
-            }
-        );
+        this.movieId = this.movieData.id;
+        this.productionCompanies = this.movieData.production_companies;
+        this.releaseDate = new Date(this.movieData.release_date+"T00:00:00");
+        this.setTime(this.releaseDate);
 
         this.refreshCountDown = interval(1000).subscribe(
             () => this.setTime(this.releaseDate)
         );
     }
 
+    ngAfterViewChecked(): void {
+
+        if (this.isTitleLong != this.enableSlideText('#title-'+this.movieId)) {
+            this.isTitleLong = this.enableSlideText('#title-'+this.movieId);
+            this.cd.detectChanges();
+        }
+        if (this.isStudioTextLong != this.enableSlideText('#studio-'+this.movieId)) {
+            this.isStudioTextLong = this.enableSlideText('#studio-'+this.movieId);
+            this.cd.detectChanges();
+        }
+    }
+
     ngOnDelete(): void {
+
         this.refreshCountDown.unsubscribe();
     }
 
@@ -75,7 +84,6 @@ export class MovieCardComponent implements OnInit {
         let textContainerWidth = parseFloat(window.getComputedStyle(textContainer).width);
         let titleText: Element = document.querySelector(elementClass)!;
 
-        //!!!!!ExpressionChangedAfterItHasBeenCheckedError fix it
         if (titleText?.scrollWidth > textContainerWidth) {
             return true;
         }

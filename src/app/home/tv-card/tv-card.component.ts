@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
 import { interval } from 'rxjs';
 
 import { HomeService } from '../home.service';
@@ -9,16 +9,16 @@ import { TVCardData, ProductionCompany, Episode } from './model/tv-card';
   templateUrl: './tv-card.component.html',
   styleUrls: ['./tv-card.component.css']
 })
-export class TvCardComponent implements OnInit {
+export class TvCardComponent implements OnInit, AfterViewChecked {
 
-    /** TV id. */
-    @Input() public tvId: number;
+    /** TV show card data. */
+    @Input() public tvData: TVCardData;
 
     /** Event emitter when remove button is clicked.  */
     @Output() public removed = new EventEmitter<number>();
 
-    /** TV show card data. */
-    public tvData: TVCardData;
+    /** TV id. */
+    public tvId: number;
 
     /** TV show's networks. */
     public networks: ProductionCompany[];
@@ -29,40 +29,53 @@ export class TvCardComponent implements OnInit {
     /** Release date. */
     public releaseDate: Date;
 
+    /** if title text overflows. */
+    public isTitleLong: boolean = false;
+
+    /** if episode text overflows. */
+    public isEpisodeTextLong: boolean = false;
+
+    /** if network text overflows. */
+    public isNetworkTextLong: boolean = false;
+
     /** Refresh count down. */
     private refreshCountDown: any;
 
     /**
-     * 
-     * @param homeService 
+     * @param cd 
      */
-    constructor(private homeService: HomeService) { }
+    constructor(private cd: ChangeDetectorRef) { }
 
     ngOnInit(): void {
 
-        this.homeService.getTVData(this.tvId).subscribe(
-            data => {
-                console.log(data);
-
-                this.tvData = data;
-                this.networks = data.networks;
-
-                this.setTVData();
-                
-                this.releaseDate = new Date(this.tvData.display_episode.air_date+"T00:00:00");
-                this.setTime(this.releaseDate);
-            },
-            error => {
-                console.log(error);
-            }
-        );
-
+        this.tvId = this.tvData.id;
+        this.networks = this.tvData.networks;
+        this.setTVData();
+        this.releaseDate = new Date(this.tvData.display_episode.air_date+"T00:00:00");
+        this.setTime(this.releaseDate);
         this.refreshCountDown = interval(1000).subscribe(
             () => this.setTime(this.releaseDate)
         );
     }
 
+    ngAfterViewChecked(): void {
+
+        if (this.isTitleLong != this.enableSlideText('#title-'+this.tvId)) {
+            this.isTitleLong = this.enableSlideText('#title-'+this.tvId);
+            this.cd.detectChanges();
+        }
+        if (this.isEpisodeTextLong != this.enableSlideText('#episode-'+this.tvId)) {
+            this.isEpisodeTextLong = this.enableSlideText('#episode-'+this.tvId);
+            this.cd.detectChanges();
+        }
+        if (this.isNetworkTextLong != this.enableSlideText('#network-'+this.tvData.id)) {
+            this.isNetworkTextLong = this.enableSlideText('#network-'+this.tvData.id);
+            this.cd.detectChanges();
+        }
+    }
+
     ngOnDelete(): void {
+
         this.refreshCountDown.unsubscribe();
     }
 
@@ -101,7 +114,6 @@ export class TvCardComponent implements OnInit {
         let textContainerWidth = parseFloat(window.getComputedStyle(textContainer).width);
         let titleText: Element = document.querySelector(elementClass)!;
 
-        //!!!!!ExpressionChangedAfterItHasBeenCheckedError fix it
         if (titleText?.scrollWidth > textContainerWidth) {
             return true;
         }

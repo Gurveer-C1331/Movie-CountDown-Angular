@@ -1,5 +1,5 @@
 <ng-container *ngIf="movieData">
-    <div class="card-container" [ngStyle]="{'background-image': 'url(https://image.tmdb.org/t/p/w500' + movieData.poster_path + ')'}">
+    <div class="card-container" [ngStyle]="movieData.poster_path ? {'background-image': 'url(https://image.tmdb.org/t/p/w500' + movieData.poster_path + ')'} : {'background-image': 'none'}">
         <div class="image-container">
             <img *ngIf="movieData.poster_path; else elsePoster" src="https://image.tmdb.org/t/p/w500{{ movieData.poster_path }}" alt="" id="image">
             <ng-template #elsePoster><img></ng-template>
@@ -7,10 +7,10 @@
 
         <div class="text-container">
             <div class="top no-hover">
-                <span class="title-text" id="title-{{ movieData.id }}" [ngClass]="enableSlideText('#title-'+movieData.id) === true ? 'animate' : ''">
+                <span class="title-text" id="title-{{ movieData.id }}" [ngClass]="isTitleLong ? 'animate' : ''">
                     {{ movieData.title }}</span><br>
                 
-                <span *ngIf="productionCompanies[0]; else elseProductionCompany" class="studio-text" id="studio-{{ movieData.id }}" [ngClass]="enableSlideText('#studio-'+movieData.id) === true ? 'animate' : ''">
+                <span *ngIf="productionCompanies[0]; else elseProductionCompany" class="studio-text" id="studio-{{ movieData.id }}" [ngClass]="isStudioTextLong ? 'animate' : ''">
                     {{ productionCompanies[0].name }}</span>
                 <ng-template #elseProductionCompany><span></span></ng-template><br>
                 

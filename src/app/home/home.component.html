@@ -1,13 +1,17 @@
 <div class="container">
     <app-new-user-content *ngIf="isEmpty(movieCollection) && isEmpty(tvCollection)"></app-new-user-content>
 
-    <app-loader *ngIf="isLoading"></app-loader>
-    <div class="main-container">
-        <ng-container *ngFor="let movie of movieCollection">
-            <app-movie-card [movieId]="convertID(movie)" (removed)="onRemoveMovie($event)"></app-movie-card>
+    <app-loader *ngIf="!((isMovieReady || isEmpty(movieCollection)) && (isTVReady || isEmpty(tvCollection)))"></app-loader>
+    <div *ngIf="(isMovieReady || isEmpty(movieCollection)) && (isTVReady || isEmpty(tvCollection))" class="main-container">
+        <!-- <ng-container *ngFor="let movie of movieCollection">
+        </ng-container> -->
+        <ng-container *ngFor="let movie of movieData">
+            <app-movie-card *ngIf="movie" [movieData]="movie" (removed)="onRemoveMovie($event)"></app-movie-card>
         </ng-container>
-        <ng-container *ngFor="let tv of tvCollection">
-            <app-tv-card [tvId]="convertID(tv)" (removed)="onRemoveTV($event)"></app-tv-card>
+        <!-- <ng-container *ngFor="let tv of tvCollection">
+        </ng-container> -->
+        <ng-container *ngFor="let tv of tvData">
+            <app-tv-card *ngIf="tv" [tvData]="tv" (removed)="onRemoveTV($event)"></app-tv-card>
         </ng-container>
     </div>
 </div>
