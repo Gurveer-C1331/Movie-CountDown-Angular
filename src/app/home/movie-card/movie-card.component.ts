@@ -1,7 +1,6 @@
 import { Component, OnInit, EventEmitter, Input, Output, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
 import { interval } from 'rxjs';
 
-import { HomeService } from '../home.service';
 import { MovieCardData, ProductionCompany } from './model/movie-card';
 
 @Component({

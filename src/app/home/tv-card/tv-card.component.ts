@@ -1,8 +1,7 @@
 import { Component, OnInit, EventEmitter, Input, Output, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
 import { interval } from 'rxjs';
 
-import { HomeService } from '../home.service';
-import { TVCardData, ProductionCompany, Episode } from './model/tv-card';
+import { TVCardData, ProductionCompany } from './model/tv-card';
 
 @Component({
   selector: 'app-tv-card',
@@ -50,9 +49,9 @@ export class TvCardComponent implements OnInit, AfterViewChecked {
 
         this.tvId = this.tvData.id;
         this.networks = this.tvData.networks;
-        this.setTVData();
         this.releaseDate = new Date(this.tvData.display_episode.air_date+"T00:00:00");
         this.setTime(this.releaseDate);
+
         this.refreshCountDown = interval(1000).subscribe(
             () => this.setTime(this.releaseDate)
         );
@@ -79,29 +78,7 @@ export class TvCardComponent implements OnInit, AfterViewChecked {
         this.refreshCountDown.unsubscribe();
     }
 
-    /**
-     * Updates tv data based on the latest episode aired OR to be aired.
-     */
-    public setTVData(): void {
-
-        let displayEpisode: Episode;
-        const lastEpisode = this.tvData.last_episode_to_air;
-        const nextEpisode = this.tvData.next_episode_to_air;
-        const seasons = this.tvData.seasons;
-
-        if (this.tvData.next_episode_to_air) { displayEpisode = nextEpisode; }
-        else { displayEpisode = lastEpisode; }
-
-        let seasonNumber;
-        if (seasons[displayEpisode.season_number]) { seasonNumber = displayEpisode.season_number }
-        else { seasonNumber = seasons.length - 1; }
-
-        this.tvData.name += ' (' + seasons[seasonNumber].name + ')';
-        if (seasons[seasonNumber].poster_path) { this.tvData.poster_path = seasons[seasonNumber].poster_path; }
-
-        this.tvData.display_episode = displayEpisode;
-    }
-
+    //!!!!!test, review and commit, then work on filtering function
     /**
      * Checks whether element's text is longer than the text container.
      * 

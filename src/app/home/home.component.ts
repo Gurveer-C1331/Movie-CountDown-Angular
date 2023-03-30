@@ -4,7 +4,7 @@ import { HomeService } from './home.service';
 import { CookieService } from 'src/app/shared/cookie.service';
 import { MovieCardData } from './movie-card/model/movie-card';
 import { TVCardData } from './tv-card/model/tv-card';
-import { Observable, forkJoin, catchError, of } from 'rxjs';
+import { forkJoin, catchError, of, map } from 'rxjs';
 
 @Component({
     selector: 'app-home',
@@ -16,20 +16,23 @@ export class HomeComponent implements OnInit {
     /** list of movie ids. */
     public movieCollection: string[];
 
-    /** list of MovieCardData. */
-    public movieData: MovieCardData[] = [];
-
     /** list of tv ids. */
     public tvCollection: string[];
 
-    /** list of TVCardData. */
-    public tvData: TVCardData[] = [];
+    /** combined list of Movie and TV card data. */
+    public cardData: { type: string, releaseDate: number, name: string, data: MovieCardData | TVCardData }[] = [];
 
     /** if movie data is loaded. */
     public isMovieReady: boolean = false;
 
     /** if tv data is loaded. */
     public isTVReady: boolean = false;
+
+    /** sorting order type. */
+    public sortType: string = 'Release';
+
+    /** sort cards in ascending order. */
+    public cardsAscending: boolean = true;
 
     constructor(private homeService: HomeService, private cookieService: CookieService) { }
 
@@ -62,17 +65,38 @@ export class HomeComponent implements OnInit {
             });  
         }
         
-        forkJoin(movieCalls).subscribe(
+        forkJoin(movieCalls)
+        .subscribe(
             data => {
-                this.movieData = data;
+                //filter out null movie data
+                const filterData = data.filter(movie => {
+                    return movie;
+                });
+                this.cardData = this.cardData.concat(
+                    filterData.map(movie => {
+                        return { type: 'movie', releaseDate: movie.release_date, name: movie.title, data: movie }
+                    })
+                );
                 this.isMovieReady = true;
             }
         );
 
         forkJoin(tvCalls).subscribe(
             data => {
-                this.tvData = data;
+                //filter out null tv data
+                const filteredData = data.filter(tv => {
+                    return tv;
+                });
+                this.cardData = this.cardData.concat(
+                    filteredData.map(tv => {
+                        if (tv.next_episode_to_air) { tv.display_episode = tv.next_episode_to_air; }
+                        else { tv.display_episode = tv.last_episode_to_air; }
+                        return { type: 'tv', releaseDate: tv.display_episode.air_date, name: tv.name, data: tv }
+                    })
+                );
                 this.isTVReady = true;
+                this.cardData.sort(this.sortByRelease);
+                console.log(this.cardData);
             }
         );
     }
@@ -129,4 +153,73 @@ export class HomeComponent implements OnInit {
         //this.cookieService.setCookie('tvCollection', this.tvCollection);
         console.log('removed tv - ' + id);
     }
+
+    /**
+     * Toggles sorting type.
+     */
+    public toggleSortType(): void {
+
+        if (this.sortType === 'Release') {
+            this.sortType = 'Name';
+            this.cardsAscending = true;
+            this.cardData.sort(this.sortByName);
+        }
+        else {
+            this.sortType = 'Release';
+            this.cardsAscending = true;
+            this.cardData.sort(this.sortByRelease);
+        }
+    }
+
+    /**
+     * Toggles sorting order.
+     */
+    public toggleSortOrder(): void {
+
+        this.cardsAscending = !this.cardsAscending;
+        this.cardData.reverse();
+    }
+
+    /**
+     * Determines if object is of type MovieCardData.
+     * 
+     * @param toBeDetermined - data object
+     * @returns if object is of type MovieCardData
+     */
+    public determineIfMovieOrTV(toBeDetermined: MovieCardData | TVCardData): toBeDetermined is MovieCardData {
+
+        if((toBeDetermined as MovieCardData).release_date) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
+     * Sorts the list of card data by content release data.
+     * 
+     * @param cardA 
+     * @param cardB 
+     * @returns 
+     */
+    private sortByRelease(cardA: { type: string, releaseDate: number, data: MovieCardData | TVCardData },
+        cardB: { type: string, releaseDate: number, data: MovieCardData | TVCardData }): number {
+
+        return new Date(cardA.releaseDate+"T00:00:00").getTime() - new Date(cardB.releaseDate+"T00:00:00").getTime();
+    }
+
+    /**
+     * Sorts the list of card data by content name.
+     * 
+     * @param cardA 
+     * @param cardB 
+     */
+    private sortByName(cardA: { type: string, name: string, data: MovieCardData | TVCardData },
+        cardB: { type: string, name: string, data: MovieCardData | TVCardData }): number {
+            
+            if(cardA.name < cardB.name) { return -1; }
+            if(cardA.name > cardA.name) { return 1; }
+            return 0;
+        }
 }

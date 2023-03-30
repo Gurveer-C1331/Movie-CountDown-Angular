@@ -1,3 +1,24 @@
+#options-container {
+  display: flex;
+  justify-content: space-between;
+}
+  
+.filter-container span, .sortBy-container span {
+  font-size: .95em;
+  cursor: pointer;
+}
+  
+.filter-container img {
+  margin-right: .6em;
+  height: .9em;
+}
+  
+.sortBy-container img {
+  margin-left: .6em;
+  height: .9em;
+  cursor: pointer;
+}
+
 .container {
   display: block;
   padding: 0em 3em 3em 3em;
@@ -9,6 +30,12 @@
 @media (min-width: 2100px) {
   .container {
     font-size: 1.2em;
+  }
+}
+
+@media (min-width: 2000px) {
+  .filter-container, .sortBy-container {
+    font-size: 1.3em;
   }
 }
 
@@ -32,6 +59,9 @@
   .container{
     font-size: .9em;
   }
+  .filter-container, .sortBy-container {
+    font-size: 1.11em;
+  }
 }
 
 @media (max-width: 400px) {
@@ -40,10 +70,16 @@
     padding-left: .5em;
     padding-right: .5em;
   }
+  .filter-container, .sortBy-container {
+    font-size: 1.125em;
+  }
 }
 
 @media (max-width: 350px) {
   .container {
     font-size: .7em;
+  }
+  .filter-container, .sortBy-container {
+    font-size: 1.143em;
   }
 }

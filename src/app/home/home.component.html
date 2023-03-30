@@ -1,17 +1,23 @@
 <div class="container">
+    <div *ngIf="(isMovieReady || isEmpty(movieCollection)) && (isTVReady || isEmpty(tvCollection))" id="options-container">
+        <div class="filter-container">
+            <img src="../../assets/filter.svg" alt="">
+            <span id="filter-method">All</span>
+        </div>
+        <div class="sortBy-container">
+            <span id="sort-method" (click)="toggleSortType()">{{ sortType }}</span>
+            <img src="../../assets/arrowUp.svg" alt="" id="sort-directionUp" [ngStyle]="cardsAscending ? {'display': ''} : {'display': 'none'}" (click)="toggleSortOrder()">
+            <img src="../../assets/arrowDown.svg" alt="" id="sort-directionDown" [ngStyle]="cardsAscending ? {'display': 'none'} : {'display': ''}" (click)="toggleSortOrder()">
+        </div>
+    </div>
+
     <app-new-user-content *ngIf="isEmpty(movieCollection) && isEmpty(tvCollection)"></app-new-user-content>
 
     <app-loader *ngIf="!((isMovieReady || isEmpty(movieCollection)) && (isTVReady || isEmpty(tvCollection)))"></app-loader>
     <div *ngIf="(isMovieReady || isEmpty(movieCollection)) && (isTVReady || isEmpty(tvCollection))" class="main-container">
-        <!-- <ng-container *ngFor="let movie of movieCollection">
-        </ng-container> -->
-        <ng-container *ngFor="let movie of movieData">
-            <app-movie-card *ngIf="movie" [movieData]="movie" (removed)="onRemoveMovie($event)"></app-movie-card>
-        </ng-container>
-        <!-- <ng-container *ngFor="let tv of tvCollection">
-        </ng-container> -->
-        <ng-container *ngFor="let tv of tvData">
-            <app-tv-card *ngIf="tv" [tvData]="tv" (removed)="onRemoveTV($event)"></app-tv-card>
+        <ng-container *ngFor="let content of cardData">
+            <app-movie-card *ngIf="determineIfMovieOrTV(content.data)" [movieData]="content.data" (removed)="onRemoveMovie($event)"></app-movie-card>
+            <app-tv-card *ngIf="!determineIfMovieOrTV(content.data)" [tvData]="content.data" (removed)="onRemoveTV($event)"></app-tv-card>
         </ng-container>
     </div>
 </div>
