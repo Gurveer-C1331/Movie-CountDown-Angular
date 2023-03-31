@@ -78,7 +78,6 @@ export class TvCardComponent implements OnInit, AfterViewChecked {
         this.refreshCountDown.unsubscribe();
     }
 
-    //!!!!!test, review and commit, then work on filtering function
     /**
      * Checks whether element's text is longer than the text container.
      * 

@@ -2,7 +2,7 @@
     <div *ngIf="(isMovieReady || isEmpty(movieCollection)) && (isTVReady || isEmpty(tvCollection))" id="options-container">
         <div class="filter-container">
             <img src="../../assets/filter.svg" alt="">
-            <span id="filter-method">All</span>
+            <span id="filter-method" (click)="toggleFilterType()">{{ filterType }}</span>
         </div>
         <div class="sortBy-container">
             <span id="sort-method" (click)="toggleSortType()">{{ sortType }}</span>
@@ -16,8 +16,8 @@
     <app-loader *ngIf="!((isMovieReady || isEmpty(movieCollection)) && (isTVReady || isEmpty(tvCollection)))"></app-loader>
     <div *ngIf="(isMovieReady || isEmpty(movieCollection)) && (isTVReady || isEmpty(tvCollection))" class="main-container">
         <ng-container *ngFor="let content of cardData">
-            <app-movie-card *ngIf="determineIfMovieOrTV(content.data)" [movieData]="content.data" (removed)="onRemoveMovie($event)"></app-movie-card>
-            <app-tv-card *ngIf="!determineIfMovieOrTV(content.data)" [tvData]="content.data" (removed)="onRemoveTV($event)"></app-tv-card>
+            <app-movie-card *ngIf="determineIfMovieOrTV(content.data) && (filterType === 'All' || filterType === 'Movies')" [movieData]="content.data" (removed)="onRemoveMovie($event)"></app-movie-card>
+            <app-tv-card *ngIf="!determineIfMovieOrTV(content.data) && (filterType === 'All' || filterType === 'TV Series')" [tvData]="content.data" (removed)="onRemoveTV($event)"></app-tv-card>
         </ng-container>
     </div>
 </div>

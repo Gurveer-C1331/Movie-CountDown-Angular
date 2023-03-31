@@ -31,6 +31,9 @@ export class HomeComponent implements OnInit {
     /** sorting order type. */
     public sortType: string = 'Release';
 
+    /** filter type. */
+    public filterType: string = 'All';
+
     /** sort cards in ascending order. */
     public cardsAscending: boolean = true;
 
@@ -181,6 +184,16 @@ export class HomeComponent implements OnInit {
     }
 
     /**
+     * Toggles filter type.
+     */
+    public toggleFilterType(): void {
+
+        if (this.filterType === 'All') { this.filterType = 'Movies' }
+        else if (this.filterType === 'Movies') { this.filterType = 'TV Series' }
+        else { this.filterType = 'All' }
+    }
+
+    /**
      * Determines if object is of type MovieCardData.
      * 
      * @param toBeDetermined - data object
@@ -218,8 +231,8 @@ export class HomeComponent implements OnInit {
     private sortByName(cardA: { type: string, name: string, data: MovieCardData | TVCardData },
         cardB: { type: string, name: string, data: MovieCardData | TVCardData }): number {
             
-            if(cardA.name < cardB.name) { return -1; }
-            if(cardA.name > cardA.name) { return 1; }
-            return 0;
-        }
+        if(cardA.name < cardB.name) { return -1; }
+        if(cardA.name > cardA.name) { return 1; }
+        return 0;
+    }
 }
