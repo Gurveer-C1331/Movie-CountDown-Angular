@@ -1,13 +1,13 @@
 <div class="container">
     <div *ngIf="(isMovieReady || isEmpty(movieCollection)) && (isTVReady || isEmpty(tvCollection))" id="options-container">
         <div class="filter-container">
-            <img src="../../assets/filter.svg" alt="">
+            <img src="assets/filter.svg" alt="">
             <span id="filter-method" (click)="toggleFilterType()">{{ filterType }}</span>
         </div>
         <div class="sortBy-container">
             <span id="sort-method" (click)="toggleSortType()">{{ sortType }}</span>
-            <img src="../../assets/arrowUp.svg" alt="" id="sort-directionUp" [ngStyle]="cardsAscending ? {'display': ''} : {'display': 'none'}" (click)="toggleSortOrder()">
-            <img src="../../assets/arrowDown.svg" alt="" id="sort-directionDown" [ngStyle]="cardsAscending ? {'display': 'none'} : {'display': ''}" (click)="toggleSortOrder()">
+            <img src="assets/arrowUp.svg" alt="" id="sort-directionUp" [ngStyle]="cardsAscending ? {'display': ''} : {'display': 'none'}" (click)="toggleSortOrder()">
+            <img src="assets/arrowDown.svg" alt="" id="sort-directionDown" [ngStyle]="cardsAscending ? {'display': 'none'} : {'display': ''}" (click)="toggleSortOrder()">
         </div>
     </div>
 
