@@ -17,7 +17,7 @@ export class HomeService {
 
     /**
      * Retrieve movie data for moveId provided.
-     * 
+     *
      * @param movieId - id for a movie
      * @returns - Observable containing movie data for movieId
      */
@@ -27,7 +27,7 @@ export class HomeService {
 
     /**
      * Retrieve tv series data for tvId provided.
-     * 
+     *
      * @param tvId - id for a tv series
      * @returns - Observable containing tv series data for tvId
      */

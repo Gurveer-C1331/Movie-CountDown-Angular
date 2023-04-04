@@ -29,19 +29,19 @@ export class TvCardComponent implements OnInit, AfterViewChecked {
     public releaseDate: Date;
 
     /** if title text overflows. */
-    public isTitleLong: boolean = false;
+    public isTitleLong = false;
 
     /** if episode text overflows. */
-    public isEpisodeTextLong: boolean = false;
+    public isEpisodeTextLong = false;
 
     /** if network text overflows. */
-    public isNetworkTextLong: boolean = false;
+    public isNetworkTextLong = false;
 
     /** Refresh count down. */
     private refreshCountDown: any;
 
     /**
-     * @param cd 
+     * @param cd
      */
     constructor(private cd: ChangeDetectorRef) { }
 
@@ -49,7 +49,7 @@ export class TvCardComponent implements OnInit, AfterViewChecked {
 
         this.tvId = this.tvData.id;
         this.networks = this.tvData.networks;
-        this.releaseDate = new Date(this.tvData.display_episode.air_date+"T00:00:00");
+        this.releaseDate = new Date(this.tvData.display_episode.air_date+'T00:00:00');
         this.setTime(this.releaseDate);
 
         this.refreshCountDown = interval(1000).subscribe(
@@ -59,15 +59,15 @@ export class TvCardComponent implements OnInit, AfterViewChecked {
 
     ngAfterViewChecked(): void {
 
-        if (this.isTitleLong != this.enableSlideText('#title-'+this.tvId)) {
+        if (this.isTitleLong !== this.enableSlideText('#title-'+this.tvId)) {
             this.isTitleLong = this.enableSlideText('#title-'+this.tvId);
             this.cd.detectChanges();
         }
-        if (this.isEpisodeTextLong != this.enableSlideText('#episode-'+this.tvId)) {
+        if (this.isEpisodeTextLong !== this.enableSlideText('#episode-'+this.tvId)) {
             this.isEpisodeTextLong = this.enableSlideText('#episode-'+this.tvId);
             this.cd.detectChanges();
         }
-        if (this.isNetworkTextLong != this.enableSlideText('#network-'+this.tvData.id)) {
+        if (this.isNetworkTextLong !== this.enableSlideText('#network-'+this.tvData.id)) {
             this.isNetworkTextLong = this.enableSlideText('#network-'+this.tvData.id);
             this.cd.detectChanges();
         }
@@ -80,15 +80,15 @@ export class TvCardComponent implements OnInit, AfterViewChecked {
 
     /**
      * Checks whether element's text is longer than the text container.
-     * 
+     *
      * @param elementClass - class name for the text element
      * @returns - whether or not the text is longer
      */
     public enableSlideText(elementClass: string): boolean {
 
-        let textContainer: Element = document.querySelector('.text-container')!;
-        let textContainerWidth = parseFloat(window.getComputedStyle(textContainer).width);
-        let titleText: Element = document.querySelector(elementClass)!;
+        const textContainer: Element = document.querySelector('.text-container')!;
+        const textContainerWidth = parseFloat(window.getComputedStyle(textContainer).width);
+        const titleText: Element = document.querySelector(elementClass)!;
 
         if (titleText?.scrollWidth > textContainerWidth) {
             return true;
@@ -98,7 +98,7 @@ export class TvCardComponent implements OnInit, AfterViewChecked {
 
     /**
      * Sets the days, hours, minute, second and date for the card.
-     * 
+     *
      * @param releaseDate - release date for the movie or series
      */
     private setTime(releaseDate: Date) {
@@ -106,9 +106,9 @@ export class TvCardComponent implements OnInit, AfterViewChecked {
         const difference = (releaseDate.getTime() + 1000*60*60*24*0 ) - today.getTime();
 
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hours = "0" + Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString();
-        const minutes = "0" + Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)).toString();
-        const seconds = "0" + Math.floor((difference % (1000 * 60)) / 1000).toString();
+        const hours = '0' + Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString();
+        const minutes = '0' + Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)).toString();
+        const seconds = '0' + Math.floor((difference % (1000 * 60)) / 1000).toString();
 
         //movie/tv series has released
         if (difference / (1000 * 60 * 60 * 24) < 0) {
@@ -116,7 +116,7 @@ export class TvCardComponent implements OnInit, AfterViewChecked {
         }
         //less than a day from release
         else if (difference / (1000 * 60 * 60 * 24) < 1) {
-            this.daysTilRelease = hours.slice(-2) + " : " + minutes.slice(-2) + " : " + seconds.slice(-2);
+            this.daysTilRelease = hours.slice(-2) + ' : ' + minutes.slice(-2) + ' : ' + seconds.slice(-2);
         }
         //multiple days from release
         else { this.daysTilRelease = days.toString(); }

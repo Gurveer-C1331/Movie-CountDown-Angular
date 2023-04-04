@@ -8,7 +8,7 @@ import { MovieCardData, ProductionCompany } from './model/movie-card';
     templateUrl: './movie-card.component.html',
     styleUrls: ['./movie-card.component.css']
 })
-export class MovieCardComponent implements OnInit {
+export class MovieCardComponent implements OnInit, AfterViewChecked {
 
     /** Movie card data. */
     @Input() public movieData: MovieCardData;
@@ -29,10 +29,10 @@ export class MovieCardComponent implements OnInit {
     public releaseDate: Date;
 
     /** if title text overflows. */
-    public isTitleLong: boolean = false;
+    public isTitleLong = false;
 
     /** if studio text overflows. */
-    public isStudioTextLong: boolean = false;
+    public isStudioTextLong = false;
 
     /** Refresh count down. */
     private refreshCountDown: any;
@@ -46,7 +46,7 @@ export class MovieCardComponent implements OnInit {
 
         this.movieId = this.movieData.id;
         this.productionCompanies = this.movieData.production_companies;
-        this.releaseDate = new Date(this.movieData.release_date+"T00:00:00");
+        this.releaseDate = new Date(this.movieData.release_date+'T00:00:00');
         this.setTime(this.releaseDate);
 
         this.refreshCountDown = interval(1000).subscribe(
@@ -56,11 +56,11 @@ export class MovieCardComponent implements OnInit {
 
     ngAfterViewChecked(): void {
 
-        if (this.isTitleLong != this.enableSlideText('#title-'+this.movieId)) {
+        if (this.isTitleLong !== this.enableSlideText('#title-'+this.movieId)) {
             this.isTitleLong = this.enableSlideText('#title-'+this.movieId);
             this.cd.detectChanges();
         }
-        if (this.isStudioTextLong != this.enableSlideText('#studio-'+this.movieId)) {
+        if (this.isStudioTextLong !== this.enableSlideText('#studio-'+this.movieId)) {
             this.isStudioTextLong = this.enableSlideText('#studio-'+this.movieId);
             this.cd.detectChanges();
         }
@@ -73,15 +73,15 @@ export class MovieCardComponent implements OnInit {
 
     /**
      * Checks whether element's text is longer than the text container.
-     * 
+     *
      * @param elementClass - class name for the text element
      * @returns - whether or not the text is longer
      */
     public enableSlideText(elementClass: string): boolean {
 
-        let textContainer: Element = document.querySelector('.text-container')!;
-        let textContainerWidth = parseFloat(window.getComputedStyle(textContainer).width);
-        let titleText: Element = document.querySelector(elementClass)!;
+        const textContainer: Element = document.querySelector('.text-container')!;
+        const textContainerWidth = parseFloat(window.getComputedStyle(textContainer).width);
+        const titleText: Element = document.querySelector(elementClass)!;
 
         if (titleText?.scrollWidth > textContainerWidth) {
             return true;
@@ -91,17 +91,17 @@ export class MovieCardComponent implements OnInit {
 
     /**
      * Sets the days, hours, minute, second and date for the card.
-     * 
+     *
      * @param releaseDate - release date for the movie or series
      */
     private setTime(releaseDate: Date) {
         const today = new Date();
         const difference = (releaseDate.getTime() + 1000*60*60*24*0 ) - today.getTime();
-    
+
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hours = "0" + Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString();
-        const minutes = "0" + Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)).toString();
-        const seconds = "0" + Math.floor((difference % (1000 * 60)) / 1000).toString();
+        const hours = '0' + Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString();
+        const minutes = '0' + Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)).toString();
+        const seconds = '0' + Math.floor((difference % (1000 * 60)) / 1000).toString();
 
         //movie/tv series has released
         if (difference / (1000 * 60 * 60 * 24) < 0) {
@@ -109,7 +109,7 @@ export class MovieCardComponent implements OnInit {
         }
         //less than a day from release
         else if (difference / (1000 * 60 * 60 * 24) < 1) {
-            this.daysTilRelease = hours.slice(-2) + " : " + minutes.slice(-2) + " : " + seconds.slice(-2);
+            this.daysTilRelease = hours.slice(-2) + ' : ' + minutes.slice(-2) + ' : ' + seconds.slice(-2);
         }
         //multiple days from release
         else { this.daysTilRelease = days.toString(); }
