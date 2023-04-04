@@ -106,9 +106,29 @@
             "name": "Gurveer-C1331",
             "email": "g@email.com"
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
-  "defaultProject": "website"
+  "defaultProject": "website",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  },
+  "schematics": {
+    "@angular-eslint/schematics:application": {
+        "setParserOptionsProject": true
+    },
+    "@angular-eslint/schematics:library": {
+        "setParserOptionsProject": true
+    }
+  }
 }
