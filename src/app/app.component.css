@@ -50,7 +50,7 @@ footer {
     padding: 2em 1em;
     color: #fff;
     text-align: center;
-    margin-top: 2em;
+    /* margin-top: 2em; */
 }
 
 @media (min-width: 2000px) {
