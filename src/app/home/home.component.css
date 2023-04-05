@@ -24,7 +24,7 @@
   padding: 0em 3em 3em 3em;
   margin: auto;
   width: max-content;
-  margin-bottom: 5em;
+  /* margin-bottom: 5em; */
 }
 
 @media (min-width: 2100px) {
