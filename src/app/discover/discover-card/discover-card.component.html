@@ -1,0 +1,20 @@
+<div class="search-card" [ngStyle]="cardData.poster_path ?
+    {'background-image': 'url(https://image.tmdb.org/t/p/w500' + cardData.poster_path + ')'} :
+    {'background-image': 'none'}">
+    <div class="search-item">
+        <img *ngIf="cardData.poster_path; else elsePoster" src="https://image.tmdb.org/t/p/w500{{ cardData.poster_path }}" 
+            class="no-hover poster" alt="" id="image">
+        <ng-template #elsePoster><img  src='' alt='poster image' class='no-hover' style='padding: 1em'></ng-template>
+
+        <div class='no-hover'>
+            <span *ngIf="cardData.title">{{ cardData.title }}</span>
+            <span *ngIf="cardData.name">{{ cardData.name }}</span>
+        </div>
+        <span style='display:none'>{{ cardData.id }}</span>
+        <span style='display:none'>{{ cardType }}</span>
+
+        <!-- temporarily removed to be enabled later -->
+        <!-- <img *ngIf="!inCollection" src='assets/plus.svg' alt='' class='add-text' (click)="added.emit(movieData.id)">
+        <img *ngIf="inCollection" src='assets/x.svg' alt='' class='remove-text' (click)="removed.emit(movieData.id)"> -->
+    </div>
+</div>
