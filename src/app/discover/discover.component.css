@@ -1,0 +1,185 @@
+#results-container {
+  display: grid;
+  grid-gap: 2em;
+  grid-template-columns: 15% 15% 15% 15% 15%;
+  justify-content: space-evenly;
+  padding: 2em;
+}
+
+h1 {
+    margin-bottom: .4em;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+}
+
+p {
+    margin: 1em 0em;
+    padding: 0em 3em;
+    text-align: center;
+    font-size: .9em;
+    color: #666666;
+}
+
+.toggle-container {
+    display: block;
+    margin: auto;
+    width: max-content;
+    border-radius: 20px;
+    margin-top: 1em;
+    text-align: center;
+    padding: .3em;
+    background-color: #f8f8f8;
+}
+
+.toggle-container #toggle-movie, .toggle-container #toggle-tv {
+    display: inline-block;
+    cursor: pointer;
+    padding: .4em 1em;
+    border-radius: 20px;
+    width: 3em;
+    color: #666;
+    font-weight: 500;
+}
+
+.toggle-container .current {
+    background-color: #000;
+    color: #FFF !important;
+}
+
+.loader-container {
+    margin-top: 3em;
+}
+
+.custom-pagination {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    max-width: 20em;
+    margin: auto;
+    padding-top: 1em;
+    padding-bottom: 3em;
+}
+
+.custom-pagination div {
+    flex: 1;
+    font-size: 1.1em;
+}
+
+.custom-pagination a {
+    cursor: pointer;
+    padding: .6em;
+}
+
+.current span {
+    display: inline-block;
+    width: 1.2em;
+    color: #FFF;
+    background-color: #000;
+    padding: .4em;
+    margin: 0;
+    border-radius: 20px;
+    font-size: .8em;
+}
+
+@media (min-width: 2100px) {
+    pagination-template {
+        font-size: 1.2em;
+    }
+}
+
+@media (min-width: 2000px) {
+    .discover-nav {
+        font-size: 1.3em;
+    }
+}
+
+@media (min-width: 1800px) {
+  #results-container {
+    grid-template-columns: 11% 11% 11% 11% 11% 11% 11% 11%;
+  }
+  .custom-pagination {
+    padding-top: 3em;
+  }
+}
+
+@media (max-width: 1800px) {
+  #results-container {
+    grid-template-columns: 12% 12% 12% 12% 12% 12% 12%;
+  }
+}
+
+@media (max-width: 1400px) {
+  #results-container {
+    grid-template-columns: 14% 14% 14% 14% 14% 14%;
+  }
+}
+
+@media (max-width: 1150px) {
+  #results-container {
+    grid-template-columns: 17% 17% 17% 17% 17%;
+  }
+}
+
+@media (max-width: 1020px) {
+  #results-container {
+    grid-template-columns: 20% 20% 20% 20%;
+  }
+}
+
+@media (max-width: 760px) {
+  #results-container {
+    font-size: .9em;
+  }
+}
+
+@media (max-width: 725px) {
+    .discover-nav {
+        font-size: .9em;
+    }
+}
+
+@media (max-width: 650px) {
+  #results-container {
+    grid-template-columns: 25% 25% 25%;
+  }
+}
+
+@media (max-width: 530px) {
+    pagination-template {
+        font-size: .9em;
+    }
+}
+
+@media (max-width: 500px) {
+  #results-container {
+    grid-template-columns: 33% 33%;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 1em;
+  }
+  .discover-nav {
+    margin-bottom: .5em;
+  }
+}
+
+@media (max-width: 410px) {
+  #results-container {
+    grid-template-columns: 50%;
+  }
+}
+
+@media (max-width: 400px) {
+    pagination-template {
+        font-size: .8em;
+    }
+}
+
+@media (max-width: 350px) {
+    pagination-template {
+        font-size: .7em;
+    }
+    .discover-nav {
+        font-size: .8em;
+    }
+}
