@@ -2,8 +2,8 @@
     <div *ngIf="(isMovieReady || isEmpty(movieCollection)) && (isTVReady || isEmpty(tvCollection))" id="options-container">
         <div class="filter-container">
             <!-- <img src="assets/filter.svg" alt=""> -->
-            <fa-icon [icon]="faFilter"></fa-icon>
-            <span id="filter-method" (click)="toggleFilterType()">{{ filterType }}</span>
+            <fa-icon [icon]="faFilter" (click)="toggleFilterType()"></fa-icon>
+            <span id="filter-method">{{ filterType }}</span>
         </div>
         <div class="sortBy-container">
             <span id="sort-method" (click)="toggleSortType()">{{ sortType }}</span>
