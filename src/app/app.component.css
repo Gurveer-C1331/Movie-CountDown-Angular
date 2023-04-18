@@ -38,10 +38,10 @@ nav {
 }
 
 #search-btn {
-    vertical-align: text-bottom;
-    margin-left: 0.5em;
+    vertical-align: sub;
+    margin-left: 0.3em;
     cursor: pointer;
-    width: 1.68em;
+    font-size: 1.68em;
 }
 
 footer {

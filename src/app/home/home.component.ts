@@ -9,6 +9,9 @@ import { forkJoin, catchError, of } from 'rxjs';
 import {PaginationInstance} from 'ngx-pagination';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowUpLong } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDownLong } from '@fortawesome/free-solid-svg-icons';
+import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
     selector: 'app-home',
@@ -33,7 +36,10 @@ export class HomeComponent implements OnInit {
         currentPage: 1
     };
 
-    /** pagination icons. */
+    /** icons. */
+    public faArrowUp = faArrowUpLong;
+    public faArrowDown = faArrowDownLong;
+    public faFilter = faFilter;
     public faArrowLeft = faAngleLeft;
     public faArrowRight = faAngleRight;
 

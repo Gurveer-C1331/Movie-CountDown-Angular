@@ -8,13 +8,13 @@
   cursor: pointer;
 }
   
-.filter-container img {
-  margin-right: .6em;
+.filter-container img, .filter-container fa-icon {
+  margin-right: .5em;
   height: .9em;
 }
   
-.sortBy-container img {
-  margin-left: .6em;
+.sortBy-container img, .sortBy-container fa-icon {
+  margin-left: .5em;
   height: .9em;
   cursor: pointer;
 }
