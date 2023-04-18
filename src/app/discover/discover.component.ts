@@ -101,10 +101,12 @@ export class DiscoverComponent implements OnInit {
                 this.movieConfig.totalItems = data.total_results;
                 this.movieData = data.results;
                 this.isReady = true;
+                window.scrollTo(0, 0);
             },
             error: error => {
                 console.log(error);
                 this.isReady = true;
+                window.scrollTo(0, 0);
             }
         });
     }
@@ -123,10 +125,12 @@ export class DiscoverComponent implements OnInit {
                 this.tvConfig.totalItems = data.total_results;
                 this.tvData = data.results;
                 this.isReady = true;
+                window.scrollTo(0, 0);
             },
             error: error => {
                 console.log(error);
                 this.isReady = true;
+                window.scrollTo(0, 0);
             }
         });
     }
