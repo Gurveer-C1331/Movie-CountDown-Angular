@@ -3,7 +3,11 @@
   justify-content: space-between;
 }
   
-.filter-container span, .sortBy-container span {
+.filter-container span {
+  font-size: .95em;
+}
+  
+.sortBy-container span {
   font-size: .95em;
   cursor: pointer;
 }
@@ -11,6 +15,7 @@
 .filter-container img, .filter-container fa-icon {
   margin-right: .5em;
   height: .9em;
+  cursor: pointer;
 }
   
 .sortBy-container img, .sortBy-container fa-icon {
