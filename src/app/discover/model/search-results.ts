@@ -9,5 +9,6 @@ export class DiscoverCardData {
     id: number;
     title: string;
     name: string;
+    media_type: string;
     poster_path: string;
 }
