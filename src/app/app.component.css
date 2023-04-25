@@ -28,13 +28,29 @@ nav {
     font-weight: 500;
 }
 
+.search-container {
+    display: flex;
+}
+
+.search-container div {
+    position: relative;
+}
+
 #search-bar {
     border-radius: 20px;
     border: none;
     outline: none;
     background-color: #f8f8f8;
-    padding: 0.5em 1em;
+    padding: 0.5em 2.5em 0.5em 1em;
     font-size: 1em;
+}
+
+#clear-btn {
+    position: absolute;
+    right: 0;
+    padding: .5em 1em .5em .5em;
+    cursor: pointer;
+    color: #666666;
 }
 
 #search-btn {

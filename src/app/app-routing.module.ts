@@ -8,6 +8,9 @@ const routes: Routes = [
     { path: 'discover',
         loadChildren: () => import('./discover/discover.module').then(m => m.DiscoverModule)
     },
+    { path: 'search',
+        loadChildren: () => import('./search/search.module').then(m => m.SearchModule)
+    },
     { path: '**', redirectTo: 'home' }
 ];
 

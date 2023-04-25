@@ -92,7 +92,7 @@ export class DiscoverComponent implements OnInit {
      *
      * @param page - api page number for latest movies
      */
-    public getMoviePage(page: number) {
+    public getMoviePage(page: number): void {
 
         this.isReady = false;
         this.discoverService.getUpcomingMovies(page).subscribe({

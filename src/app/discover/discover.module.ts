@@ -20,6 +20,9 @@ import { DiscoverCardComponent } from './discover-card/discover-card.component';
         NgxPaginationModule,
         FontAwesomeModule
     ],
+    exports: [
+        DiscoverCardComponent
+    ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     providers: [DiscoverService]
 })
