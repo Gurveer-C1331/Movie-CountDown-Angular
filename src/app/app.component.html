@@ -6,8 +6,11 @@
         <a routerLink="/discover" routerLinkActive="active-link" id="discover-btn">Discover</a>
     </div>
     <div class="search-container">
-        <input type="text" placeholder="Search" name="search-bar" id="search-bar" [(ngModel)]="searchString.q"
-            (keydown.enter)="onSearch()">
+        <div>
+            <input type="text" placeholder="Search" name="search-bar" id="search-bar" [(ngModel)]="searchString.q"
+                (keydown.enter)="onSearch()">
+            <fa-icon *ngIf="searchString.q !== ''" [icon]="faClear" id="clear-btn" (click)="searchString.q = ''"></fa-icon>
+        </div>
 
         <!-- <img src="assets/search-icon.svg" alt="" id="search-btn"> -->
         <fa-icon [icon]="faSearch" id="search-btn" (click)="onSearch()"></fa-icon>

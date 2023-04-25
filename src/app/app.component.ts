@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,8 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 export class AppComponent {
   title = 'website';
 
-  /** search icon. */
+  /** icons. */
+  public faClear = faXmark;
   public faSearch = faMagnifyingGlass;
 
   /** search string entered by the user. */
