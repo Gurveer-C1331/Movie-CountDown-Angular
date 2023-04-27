@@ -105,6 +105,7 @@ export class HomeComponent implements OnInit {
                     filterData.map(movie => ({ type: 'movie', releaseDate: movie.release_date, name: movie.title, data: movie }))
                 );
                 this.isMovieReady = true;
+                this.cardData.sort(this.sortByRelease);
             }
         );
 
