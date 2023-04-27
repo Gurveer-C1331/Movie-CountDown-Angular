@@ -7,7 +7,7 @@
     </div>
     <div class="search-container">
         <div>
-            <input type="text" placeholder="Search" name="search-bar" id="search-bar" [(ngModel)]="searchString.q"
+            <input type="text" placeholder="Search" #searchBar name="search-bar" id="search-bar" [(ngModel)]="searchString.q"
                 (keydown.enter)="onSearch()">
             <fa-icon *ngIf="searchString.q !== ''" [icon]="faClear" id="clear-btn" (click)="searchString.q = ''"></fa-icon>
         </div>
