@@ -268,7 +268,7 @@ export class HomeComponent implements OnInit {
                     icon: 'assets/M.png'
                 });
             });
-            //localStorage.setItem('lastNotification', new Date().toDateString());
+            localStorage.setItem('lastNotification', new Date().toDateString());
         }
     }
 
