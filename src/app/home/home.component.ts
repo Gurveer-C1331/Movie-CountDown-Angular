@@ -261,12 +261,14 @@ export class HomeComponent implements OnInit {
         const difference = lastNotificationDate ? new Date().setHours(0,0,0,0) - new Date(lastNotificationDate).getTime() : -1;
 
         if (Notification.permission === 'granted' && (difference > 0 || lastNotificationDate === null)) {
-            new Notification('Releasing in 7 days',
-            {
-                body: titles,
-                icon: 'assets/M.png'
+            navigator.serviceWorker.register('ngsw-worker.js');
+            navigator.serviceWorker.ready.then(registration => {
+                registration.showNotification('Releasing in 7 days', {
+                    body: titles,
+                    icon: 'assets/M.png'
+                });
             });
-            localStorage.setItem('lastNotification', new Date().toDateString());
+            //localStorage.setItem('lastNotification', new Date().toDateString());
         }
     }
 
