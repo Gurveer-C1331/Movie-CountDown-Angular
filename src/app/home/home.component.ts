@@ -5,7 +5,7 @@ import { CookieService } from 'src/app/shared/cookie.service';
 import { MovieCardData } from './movie-card/model/movie-card';
 import { TVCardData } from './tv-card/model/tv-card';
 import { DisplayData } from './model/display-data';
-import { forkJoin, catchError, of } from 'rxjs';
+import { forkJoin, catchError, of, Observable } from 'rxjs';
 import {PaginationInstance} from 'ngx-pagination';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
@@ -69,59 +69,55 @@ export class HomeComponent implements OnInit {
             '830788','593643','762968','913290','661374','723419','619730','301502','799546','541134','894205','968051','676547',
             '830784','664469','1022789','1022787','976573','447273','616747','762509','533535','632856','774752','653851','502356',
             '934433','700391','697843','614479','638974','872585','806704','1003579','726759','532408','958196','862552','881164',
-            '821890','800158']);
+            '821890','800158','1016084']);
         this.cookieService.setCookie('tvCollection', [
             '107113','456','97951','125282','66732','1434','128095','125949','92783','85801','122196','114469','114502','157202',
             '157215','127585','201874','137437','155631','153518','114463','158087','113988','209167','78191','73375','210662',
             '155427','210232','111803','197434','157080','100088','107365','124800','96237','114472','208397','137527','135251',
-            '223722','123192']);
+            '223722','123192','25181','157160','76331','73107']);
 
         this.movieCollection = this.cookieService.getCookie('movieCollection');
         this.tvCollection = this.cookieService.getCookie('tvCollection');
         console.log(this.movieCollection);
         console.log(this.tvCollection);
 
-        const movieCalls: any[] = [];
-        const tvCalls: any[] = [];
+        const calls: Record<string, Observable<MovieCardData | TVCardData>> = {};
 
         if (!this.isEmpty(this.movieCollection)) {
             this.movieCollection.forEach(movie => {
-                movieCalls.push(this.homeService.getMovieData(movie).pipe(catchError(() => of(null))));
+                calls['movie' + movie] = this.homeService.getMovieData(movie).pipe(catchError(() => of(null as any)));
             });
         }
 
         if (!this.isEmpty(this.tvCollection)) {
             this.tvCollection.forEach(tv => {
-                tvCalls.push(this.homeService.getTVData(tv).pipe(catchError(() => of(null))));
+                calls['tv' + tv] = this.homeService.getTVData(tv).pipe(catchError(() => of(null as any)));
             });
         }
 
-        forkJoin(movieCalls)
+        forkJoin(calls)
         .subscribe(
             data => {
-                //filter out null movie data
-                const filterData = data.filter(movie => movie);
-                this.cardData = this.cardData.concat(
-                    filterData.map(movie => ({ type: 'movie', releaseDate: movie.release_date, name: movie.title, data: movie }))
-                );
-                this.isMovieReady = true;
-                this.cardData.sort(this.sortByRelease);
-            }
-        );
-
-        forkJoin(tvCalls).subscribe(
-            data => {
-                //filter out null tv data
-                const filteredData = data.filter(tv => tv);
-                this.cardData = this.cardData.concat(
-                    filteredData.map(tv => {
+                Object.keys(data).forEach(key => {
+                    const content = data[key];
+                    if (content !== null && this.determineIfMovieOrTV(content)) {
+                        const movie: MovieCardData = content;
+                        this.cardData.push({ type: 'movie', releaseDate: movie.release_date, name: movie.title, data: movie });
+                    }
+                    else if (content !== null && !this.determineIfMovieOrTV(content)) {
+                        const tv: TVCardData = content;
                         if (tv.next_episode_to_air) { tv.display_episode = tv.next_episode_to_air; }
                         else { tv.display_episode = tv.last_episode_to_air; }
-                        return { type: 'tv', releaseDate: tv.display_episode.air_date, name: tv.name, data: tv };
-                    })
-                );
+                        this.cardData.push({ type: 'tv', releaseDate: tv.display_episode.air_date, name: tv.name, data: tv });
+                    }
+                });
+                this.isMovieReady = true;
                 this.isTVReady = true;
                 this.cardData.sort(this.sortByRelease);
+
+                Notification.requestPermission();
+                const titles = this.soonRelease();
+                this.displayNotifications(titles);
             }
         );
     }
@@ -233,6 +229,44 @@ export class HomeComponent implements OnInit {
         }
         else {
             return false;
+        }
+    }
+
+
+    private soonRelease(): string {
+
+        let titles = '';
+        this.cardData.forEach(card => {
+            const today = new Date();
+            const difference = (new Date(card.releaseDate+'T00:00:00').getTime() + 1000*60*60*24*0 ) - today.getTime();
+
+            if (difference / (1000 * 60 * 60 * 24) < 8 && difference / (1000 * 60 * 60 * 24) > 0 ) {
+                if (!this.determineIfMovieOrTV(card.data)) {
+                    const seasonNumber = card.data.display_episode.season_number;
+                    const episodeNumber = card.data.display_episode.episode_number;
+                    titles += card.name + ' - S' + seasonNumber + 'E' + episodeNumber + '\n';
+                }
+                else {
+                    titles += card.name + '\n';
+                }
+            }
+        });
+
+        return titles;
+    }
+
+    private displayNotifications(titles: string): void {
+
+        const lastNotificationDate: string | null = localStorage.getItem('lastNotification');
+        const difference = lastNotificationDate ? new Date().setHours(0,0,0,0) - new Date(lastNotificationDate).getTime() : -1;
+
+        if (Notification.permission === 'granted' && (difference > 0 || lastNotificationDate === null)) {
+            new Notification('Releasing in 7 days',
+            {
+                body: titles,
+                icon: 'assets/M.png'
+            });
+            localStorage.setItem('lastNotification', new Date().toDateString());
         }
     }
 
