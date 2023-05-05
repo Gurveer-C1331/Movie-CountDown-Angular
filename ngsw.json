@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1683244408189,
+  "timestamp": 1683244802769,
   "index": "/Movie-CountDown-Angular/index.html",
   "assetGroups": [
     {
@@ -11,7 +11,7 @@
         "ignoreVary": true
       },
       "urls": [
-        "/Movie-CountDown-Angular/131.ce46cf2d9759b3d7.js",
+        "/Movie-CountDown-Angular/131.5fb5ca538b0e32bb.js",
         "/Movie-CountDown-Angular/375.1665776ec95dfe91.js",
         "/Movie-CountDown-Angular/671.97651512a15a93be.js",
         "/Movie-CountDown-Angular/70.7ca1f97dee0296f6.js",
@@ -20,7 +20,7 @@
         "/Movie-CountDown-Angular/main.f61ed8e5a486156e.js",
         "/Movie-CountDown-Angular/manifest.webmanifest",
         "/Movie-CountDown-Angular/polyfills.9162e8888958b6f0.js",
-        "/Movie-CountDown-Angular/runtime.8575cb2b1cf2f122.js",
+        "/Movie-CountDown-Angular/runtime.c5e5bd5b68d837b8.js",
         "/Movie-CountDown-Angular/styles.aefa9f5b5a3b16a6.css"
       ],
       "patterns": []
@@ -57,7 +57,7 @@
   ],
   "dataGroups": [],
   "hashTable": {
-    "/Movie-CountDown-Angular/131.ce46cf2d9759b3d7.js": "80e0066b9673ce651f9532d246b695b69238df66",
+    "/Movie-CountDown-Angular/131.5fb5ca538b0e32bb.js": "c3fd67ec201b5f0c6510aae54406ed26c05122e6",
     "/Movie-CountDown-Angular/375.1665776ec95dfe91.js": "af9e6bf924caee2b7bee911eb51061814ecba8c2",
     "/Movie-CountDown-Angular/671.97651512a15a93be.js": "74ed8847fbdb419532d5d62f7ce995240d6a7391",
     "/Movie-CountDown-Angular/70.7ca1f97dee0296f6.js": "e8eee0d3b9e023bafc615c9ac51290916e17f6cd",
@@ -80,11 +80,11 @@
     "/Movie-CountDown-Angular/assets/tv.svg": "44c55d8aa5ef8f89cb9573ef155509a734904081",
     "/Movie-CountDown-Angular/assets/x.svg": "0fb6937026716d85d64eca4067d6fe7db82fa362",
     "/Movie-CountDown-Angular/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
-    "/Movie-CountDown-Angular/index.html": "67f393ca766c6517f0de94b21ca7c0d78b6ade3b",
+    "/Movie-CountDown-Angular/index.html": "9deaf47562c42169333963a465368069eacdae13",
     "/Movie-CountDown-Angular/main.f61ed8e5a486156e.js": "0833526f67ee0b62b61b57c5d8fb78d538ef495f",
     "/Movie-CountDown-Angular/manifest.webmanifest": "bcb80908ddbf6db6dff72cdee266593ad8bc40f2",
     "/Movie-CountDown-Angular/polyfills.9162e8888958b6f0.js": "42501049a98c205815efba5cde8b5cd62fed00e5",
-    "/Movie-CountDown-Angular/runtime.8575cb2b1cf2f122.js": "4b6147c5bc581789d94f6e491fbb87689bc2168f",
+    "/Movie-CountDown-Angular/runtime.c5e5bd5b68d837b8.js": "4f2c97616ddf02177e154e6bb5c3c725a9e0abc8",
     "/Movie-CountDown-Angular/styles.aefa9f5b5a3b16a6.css": "8231897059d2103c3da9100a9d285fdaa7f12138"
   },
   "navigationUrls": [
