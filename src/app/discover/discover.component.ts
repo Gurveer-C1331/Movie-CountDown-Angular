@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { DiscoverService } from './discover.service';
-import { CookieService } from '../shared/cookie.service';
+import { CollectionService } from '../shared/collection.service';
 import { DiscoverCardData } from './model/search-results';
 import {PaginationInstance} from 'ngx-pagination';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
@@ -54,12 +54,14 @@ export class DiscoverComponent implements OnInit {
     public faArrowLeft = faAngleLeft;
     public faArrowRight = faAngleRight;
 
-    constructor(private discoverService: DiscoverService, private cookieService: CookieService) { }
+    constructor(
+        private discoverService: DiscoverService,
+        private collectionService: CollectionService) { }
 
     ngOnInit(): void {
 
-        this.movieCollection = this.cookieService.getCookie('movieCollection');
-        this.tvCollection = this.cookieService.getCookie('tvCollection');
+        this.movieCollection = this.collectionService.getCollection('movieCollection');
+        this.tvCollection = this.collectionService.getCollection('tvCollection');
         console.log(this.movieCollection);
         console.log(this.tvCollection);
 
@@ -144,7 +146,7 @@ export class DiscoverComponent implements OnInit {
 
         this.movieCollection.push(id.toString());
         //!!!temporarily removed to be enabled later
-        //this.cookieService.setCookie('movieCollection', this.movieCollection);
+        //this.collectionService.setCollection('movieCollection', this.movieCollection);
         console.log('added movie - ' + id);
     }
 
@@ -158,7 +160,7 @@ export class DiscoverComponent implements OnInit {
         const index = this.movieCollection.indexOf(id.toString());
         this.movieCollection.splice(index, 1);
         //!!!temporarily removed to be enabled later
-        //this.cookieService.setCookie('movieCollection', this.movieCollection);
+        //this.collectionService.setCollection('movieCollection', this.movieCollection);
         console.log('removed movie - ' + id);
     }
 
@@ -171,7 +173,7 @@ export class DiscoverComponent implements OnInit {
 
         this.tvCollection.push(id.toString());
         //!!!temporarily removed to be enabled later
-        //this.cookieService.setCookie('tvCollection', this.tvCollection);
+        //this.collectionService.setCollection('tvCollection', this.tvCollection);
         console.log('added tv - ' + id);
     }
 
@@ -185,7 +187,7 @@ export class DiscoverComponent implements OnInit {
         const index = this.tvCollection.indexOf(id.toString());
         this.tvCollection.splice(index, 1);
         //!!!temporarily removed to be enabled later
-        //this.cookieService.setCookie('tvCollection', this.tvCollection);
+        //this.collectionService.setCollection('tvCollection', this.tvCollection);
         console.log('removed tv - ' + id);
     }
 }

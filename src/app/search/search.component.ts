@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { SearchService } from './search.service';
-import { CookieService } from '../shared/cookie.service';
+import { CollectionService } from '../shared/collection.service';
 import { DiscoverCardData } from '../discover/model/search-results';
 import {PaginationInstance} from 'ngx-pagination';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
@@ -45,12 +45,12 @@ export class SearchComponent implements OnInit {
 
     constructor(private route: ActivatedRoute,
         private searchSerivce: SearchService,
-        private cookieService: CookieService) { }
+        private collectionService: CollectionService) { }
 
     ngOnInit(): void {
 
-        this.movieCollection = this.cookieService.getCookie('movieCollection');
-        this.tvCollection = this.cookieService.getCookie('tvCollection');
+        this.movieCollection = this.collectionService.getCollection('movieCollection');
+        this.tvCollection = this.collectionService.getCollection('tvCollection');
         console.log(this.movieCollection);
         console.log(this.tvCollection);
 
@@ -139,7 +139,7 @@ export class SearchComponent implements OnInit {
 
         this.movieCollection.push(id.toString());
         //!!!temporarily removed to be enabled later
-        //this.cookieService.setCookie('movieCollection', this.movieCollection);
+        //this.collectionService.setCollection('movieCollection', this.movieCollection);
         console.log('added movie - ' + id);
     }
 
@@ -153,7 +153,7 @@ export class SearchComponent implements OnInit {
         const index = this.movieCollection.indexOf(id.toString());
         this.movieCollection.splice(index, 1);
         //!!!temporarily removed to be enabled later
-        //this.cookieService.setCookie('movieCollection', this.movieCollection);
+        //this.collectionService.setCollection('movieCollection', this.movieCollection);
         console.log('removed movie - ' + id);
     }
 
@@ -166,7 +166,7 @@ export class SearchComponent implements OnInit {
 
         this.tvCollection.push(id.toString());
         //!!!temporarily removed to be enabled later
-        //this.cookieService.setCookie('tvCollection', this.tvCollection);
+        //this.collectionService.setCollection('tvCollection', this.tvCollection);
         console.log('added tv - ' + id);
     }
 
@@ -180,7 +180,7 @@ export class SearchComponent implements OnInit {
         const index = this.tvCollection.indexOf(id.toString());
         this.tvCollection.splice(index, 1);
         //!!!temporarily removed to be enabled later
-        //this.cookieService.setCookie('tvCollection', this.tvCollection);
+        //this.collectionService.setCollection('tvCollection', this.tvCollection);
         console.log('removed tv - ' + id);
     }
 }
