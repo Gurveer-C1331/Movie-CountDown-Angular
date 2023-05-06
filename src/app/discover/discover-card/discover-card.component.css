@@ -38,6 +38,7 @@
   
   .add-text, .remove-text {
     display: none;
+    cursor: pointer;
     background-color: rgba(0, 0, 0, 75%);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);

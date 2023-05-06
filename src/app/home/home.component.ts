@@ -144,11 +144,10 @@ export class HomeComponent implements OnInit {
 
         const index = this.movieCollection.indexOf(id.toString());
         this.movieCollection.splice(index, 1);
-        //!!!temporarily removed to be enabled later
-        //this.collectionService.setCollection('movieCollection', this.movieCollection);
+        this.collectionService.setCollection('movieCollection', this.movieCollection);
+
         this.cardData = this.cardData.filter(content =>
             ((this.determineIfMovieOrTV(content.data) && id !== content.data.id) || !this.determineIfMovieOrTV(content.data)));
-        console.log('removed movie - ' + id);
     }
 
     /**
@@ -160,11 +159,10 @@ export class HomeComponent implements OnInit {
 
         const index = this.tvCollection.indexOf(id.toString());
         this.tvCollection.splice(index, 1);
-        //!!!temporarily removed to be enabled later
-        //this.collectionService.setCollection('tvCollection', this.tvCollection);
+        this.collectionService.setCollection('tvCollection', this.tvCollection);
+
         this.cardData = this.cardData.filter(content =>
             ((!this.determineIfMovieOrTV(content.data) && id !== content.data.id) || this.determineIfMovieOrTV(content.data)));
-        console.log('removed tv - ' + id);
     }
 
     /**
