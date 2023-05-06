@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { HomeService } from './home.service';
-import { CookieService } from 'src/app/shared/cookie.service';
+import { CollectionService } from '../shared/collection.service';
 import { MovieCardData } from './movie-card/model/movie-card';
 import { TVCardData } from './tv-card/model/tv-card';
 import { DisplayData } from './model/display-data';
@@ -58,26 +58,31 @@ export class HomeComponent implements OnInit {
     /** sort cards in ascending order. */
     public cardsAscending = true;
 
-    constructor(private homeService: HomeService, private cookieService: CookieService) { }
+    constructor(
+        private homeService: HomeService,
+        private collectionService: CollectionService) { }
 
     ngOnInit(): void {
 
-        this.cookieService.setCookie('movieCollection', [
+        const movieCollection = [
             '585083','385687','569094','603692','507086','438148','338953','447365','616037','505642','575264','677179','575265',
             '640146','609681','877269','508947','619979','718789','634492','911916','725201','539972','962697','615469','361743',
             '519182','539681','787699','346698','838330','756999','822119','617127','1003598','1003596','617126','986056','929170',
             '830788','593643','762968','913290','661374','723419','619730','301502','799546','541134','894205','968051','676547',
             '830784','664469','1022789','1022787','976573','447273','616747','762509','533535','632856','774752','653851','502356',
             '934433','700391','697843','614479','638974','872585','806704','1003579','726759','532408','958196','862552','881164',
-            '821890','800158','1016084']);
-        this.cookieService.setCookie('tvCollection', [
+            '821890','800158','1016084'];
+        const tvCollection = [
             '107113','456','97951','125282','66732','1434','128095','125949','92783','85801','122196','114469','114502','157202',
             '157215','127585','201874','137437','155631','153518','114463','158087','113988','209167','78191','73375','210662',
             '155427','210232','111803','197434','157080','100088','107365','124800','96237','114472','208397','137527','135251',
-            '223722','123192','25181','157160','76331','73107']);
+            '223722','123192','25181','157160','76331','73107'];
 
-        this.movieCollection = this.cookieService.getCookie('movieCollection');
-        this.tvCollection = this.cookieService.getCookie('tvCollection');
+        this.collectionService.setCollection('movieCollection', movieCollection);
+        this.collectionService.setCollection('tvCollection', tvCollection);
+
+        this.movieCollection = this.collectionService.getCollection('movieCollection');
+        this.tvCollection = this.collectionService.getCollection('tvCollection');
         console.log(this.movieCollection);
         console.log(this.tvCollection);
 
@@ -157,7 +162,7 @@ export class HomeComponent implements OnInit {
         const index = this.movieCollection.indexOf(id.toString());
         this.movieCollection.splice(index, 1);
         //!!!temporarily removed to be enabled later
-        //this.cookieService.setCookie('movieCollection', this.movieCollection);
+        //this.collectionService.setCollection('movieCollection', this.movieCollection);
         this.cardData = this.cardData.filter(content =>
             ((this.determineIfMovieOrTV(content.data) && id !== content.data.id) || !this.determineIfMovieOrTV(content.data)));
         console.log('removed movie - ' + id);
@@ -173,7 +178,7 @@ export class HomeComponent implements OnInit {
         const index = this.tvCollection.indexOf(id.toString());
         this.tvCollection.splice(index, 1);
         //!!!temporarily removed to be enabled later
-        //this.cookieService.setCookie('tvCollection', this.tvCollection);
+        //this.collectionService.setCollection('tvCollection', this.tvCollection);
         this.cardData = this.cardData.filter(content =>
             ((!this.determineIfMovieOrTV(content.data) && id !== content.data.id) || this.determineIfMovieOrTV(content.data)));
         console.log('removed tv - ' + id);
@@ -232,7 +237,11 @@ export class HomeComponent implements OnInit {
         }
     }
 
-
+    /**
+     * Generates string containing titles of content releasing in the next 7 days.
+     *
+     * @returns - string containing titles of upcoming content
+     */
     private soonRelease(): string {
 
         let titles = '';
@@ -255,13 +264,23 @@ export class HomeComponent implements OnInit {
         return titles;
     }
 
+    /**
+     * Displays notification of content releasing in the next 7 days.
+     *
+     * @param titles - string containing titles of upcoming content
+     */
     private displayNotifications(titles: string): void {
 
         const lastNotificationDate: string | null = localStorage.getItem('lastNotification');
         const difference = lastNotificationDate ? new Date().setHours(0,0,0,0) - new Date(lastNotificationDate).getTime() : -1;
 
         if (Notification.permission === 'granted' && (difference > 0 || lastNotificationDate === null)) {
-            navigator.serviceWorker.register('ngsw-worker.js');
+            navigator.serviceWorker.register('ngsw-worker.js').catch(() => {
+                new Notification('Releasing in 7 days', {
+                    body: titles,
+                    icon: 'assets/M.png'
+                });
+            });
             navigator.serviceWorker.ready.then(registration => {
                 registration.showNotification('Releasing in 7 days', {
                     body: titles,

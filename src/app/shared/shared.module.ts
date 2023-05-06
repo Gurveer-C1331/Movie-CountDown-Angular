@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { CookieService } from './cookie.service';
 import { LoaderComponent } from './loader/loader.component';
+import { CollectionService } from './collection.service';
 
 @NgModule({
     declarations: [
@@ -14,7 +14,7 @@ import { LoaderComponent } from './loader/loader.component';
     exports: [
         LoaderComponent
     ],
-    providers: [CookieService]
+    providers: [CollectionService]
 })
 
 export class SharedModule { }
