@@ -138,9 +138,7 @@ export class SearchComponent implements OnInit {
     public onAddMovie(id: number) {
 
         this.movieCollection.push(id.toString());
-        //!!!temporarily removed to be enabled later
-        //this.collectionService.setCollection('movieCollection', this.movieCollection);
-        console.log('added movie - ' + id);
+        this.collectionService.setCollection('movieCollection', this.movieCollection);
     }
 
     /**
@@ -152,9 +150,7 @@ export class SearchComponent implements OnInit {
 
         const index = this.movieCollection.indexOf(id.toString());
         this.movieCollection.splice(index, 1);
-        //!!!temporarily removed to be enabled later
-        //this.collectionService.setCollection('movieCollection', this.movieCollection);
-        console.log('removed movie - ' + id);
+        this.collectionService.setCollection('movieCollection', this.movieCollection);
     }
 
     /**
@@ -165,9 +161,7 @@ export class SearchComponent implements OnInit {
     public onAddTV(id: number) {
 
         this.tvCollection.push(id.toString());
-        //!!!temporarily removed to be enabled later
-        //this.collectionService.setCollection('tvCollection', this.tvCollection);
-        console.log('added tv - ' + id);
+        this.collectionService.setCollection('tvCollection', this.tvCollection);
     }
 
     /**
@@ -179,8 +173,6 @@ export class SearchComponent implements OnInit {
 
         const index = this.tvCollection.indexOf(id.toString());
         this.tvCollection.splice(index, 1);
-        //!!!temporarily removed to be enabled later
-        //this.collectionService.setCollection('tvCollection', this.tvCollection);
-        console.log('removed tv - ' + id);
+        this.collectionService.setCollection('tvCollection', this.tvCollection);
     }
 }

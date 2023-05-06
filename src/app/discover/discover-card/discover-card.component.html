@@ -13,8 +13,7 @@
         <span style='display:none'>{{ cardData.id }}</span>
         <span style='display:none'>{{ cardType }}</span>
 
-        <!-- temporarily removed to be enabled later -->
-        <!-- <img *ngIf="!inCollection" src='assets/plus.svg' alt='' class='add-text' (click)="added.emit(cardData.id)">
-        <img *ngIf="inCollection" src='assets/x.svg' alt='' class='remove-text' (click)="removed.emit(cardData.id)"> -->
+        <img *ngIf="!inCollection" src='assets/plus.svg' alt='' class='add-text' (click)="added.emit(cardData.id)">
+        <img *ngIf="inCollection" src='assets/x.svg' alt='' class='remove-text' (click)="removed.emit(cardData.id)">
     </div>
 </div>
