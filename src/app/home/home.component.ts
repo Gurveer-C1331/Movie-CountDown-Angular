@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { HomeService } from './home.service';
 import { CollectionService } from '../shared/collection.service';
 import { MovieCardData } from './movie-card/model/movie-card';
-import { TVCardData } from './tv-card/model/tv-card';
+import { Episode, TVCardData } from './tv-card/model/tv-card';
 import { DisplayData } from './model/display-data';
 import { forkJoin, catchError, of, Observable } from 'rxjs';
 import {PaginationInstance} from 'ngx-pagination';
@@ -88,14 +88,29 @@ export class HomeComponent implements OnInit {
             data => {
                 Object.keys(data).forEach(key => {
                     const content = data[key];
-                    if (content !== null && this.determineIfMovieOrTV(content)) {
+                    if (content !== null && this.determineIfMovie(content)) {
                         const movie: MovieCardData = content;
+                        if (movie.release_date === '') {
+                            movie.release_date = '9999-12-31';
+                        }
                         this.cardData.push({ type: 'movie', releaseDate: movie.release_date, name: movie.title, data: movie });
                     }
-                    else if (content !== null && !this.determineIfMovieOrTV(content)) {
+                    else if (content !== null && this.determineIfTV(content)) {
                         const tv: TVCardData = content;
                         if (tv.next_episode_to_air) { tv.display_episode = tv.next_episode_to_air; }
-                        else { tv.display_episode = tv.last_episode_to_air; }
+                        else if (tv.last_episode_to_air) { tv.display_episode = tv.last_episode_to_air; }
+                        else {
+                            tv.display_episode = {
+                                // eslint-disable-next-line @typescript-eslint/naming-convention
+                                air_date: '9999-12-31',
+                                // eslint-disable-next-line @typescript-eslint/naming-convention
+                                episode_number: 1,
+                                id: 0,
+                                name: 'TBA',
+                                // eslint-disable-next-line @typescript-eslint/naming-convention
+                                season_number: 1
+                            };
+                        }
                         this.cardData.push({ type: 'tv', releaseDate: tv.display_episode.air_date, name: tv.name, data: tv });
                     }
                 });
@@ -147,7 +162,7 @@ export class HomeComponent implements OnInit {
         this.collectionService.setCollection('movieCollection', this.movieCollection);
 
         this.cardData = this.cardData.filter(content =>
-            ((this.determineIfMovieOrTV(content.data) && id !== content.data.id) || !this.determineIfMovieOrTV(content.data)));
+            ((this.determineIfMovie(content.data) && id !== content.data.id) || this.determineIfTV(content.data)));
     }
 
     /**
@@ -162,7 +177,7 @@ export class HomeComponent implements OnInit {
         this.collectionService.setCollection('tvCollection', this.tvCollection);
 
         this.cardData = this.cardData.filter(content =>
-            ((!this.determineIfMovieOrTV(content.data) && id !== content.data.id) || this.determineIfMovieOrTV(content.data)));
+            ((this.determineIfTV(content.data) && id !== content.data.id) || this.determineIfMovie(content.data)));
     }
 
     /**
@@ -208,9 +223,25 @@ export class HomeComponent implements OnInit {
      * @param toBeDetermined - data object
      * @returns if object is of type MovieCardData
      */
-    public determineIfMovieOrTV(toBeDetermined: MovieCardData | TVCardData): toBeDetermined is MovieCardData {
+    public determineIfMovie(toBeDetermined: any): toBeDetermined is MovieCardData {
 
-        if((toBeDetermined as MovieCardData).release_date) {
+        if((toBeDetermined as MovieCardData).title) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
+     * Determines if object is of type TVCardData.
+     *
+     * @param toBeDetermined - data object
+     * @returns if object is of type TVCardData
+     */
+    public determineIfTV(toBeDetermined: any): toBeDetermined is TVCardData {
+
+        if((toBeDetermined as TVCardData).name) {
             return true;
         }
         else {
@@ -231,7 +262,7 @@ export class HomeComponent implements OnInit {
             const difference = (new Date(card.releaseDate+'T00:00:00').getTime() + 1000*60*60*24*0 ) - today.getTime();
 
             if (difference / (1000 * 60 * 60 * 24) < 8 && difference / (1000 * 60 * 60 * 24) > 0 ) {
-                if (!this.determineIfMovieOrTV(card.data)) {
+                if (this.determineIfTV(card.data)) {
                     const seasonNumber = card.data.display_episode.season_number;
                     const episodeNumber = card.data.display_episode.episode_number;
                     titles += card.name + ' - S' + seasonNumber + 'E' + episodeNumber + '\n';

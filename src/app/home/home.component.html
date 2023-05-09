@@ -23,8 +23,8 @@
     <app-loader *ngIf="!((isMovieReady || isEmpty(movieCollection)) && (isTVReady || isEmpty(tvCollection)))"></app-loader>
     <div *ngIf="(isMovieReady || isEmpty(movieCollection)) && (isTVReady || isEmpty(tvCollection))" class="main-container">
         <ng-container *ngFor="let content of cardData | filterCards: filterType | paginate: config">
-            <app-movie-card *ngIf="determineIfMovieOrTV(content.data)" [movieData]="content.data" (removed)="onRemoveMovie($event)"></app-movie-card>
-            <app-tv-card *ngIf="!determineIfMovieOrTV(content.data)" [tvData]="content.data" (removed)="onRemoveTV($event)"></app-tv-card>
+            <app-movie-card *ngIf="determineIfMovie(content.data)" [movieData]="content.data" (removed)="onRemoveMovie($event)"></app-movie-card>
+            <app-tv-card *ngIf="determineIfTV(content.data)" [tvData]="content.data" (removed)="onRemoveTV($event)"></app-tv-card>
         </ng-container>
     </div>
     
