@@ -23,7 +23,7 @@ export class TvCardComponent implements OnInit, AfterViewChecked {
     public networks: ProductionCompany[];
 
     /** Days till the movieR */
-    public daysTilRelease: string;
+    public daysTilRelease: { 'releaseText': string; 'confirmed': boolean };
 
     /** Release date. */
     public releaseDate: Date;
@@ -86,8 +86,10 @@ export class TvCardComponent implements OnInit, AfterViewChecked {
      */
     public enableSlideText(elementClass: string): boolean {
 
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const textContainer: Element = document.querySelector('.text-container')!;
         const textContainerWidth = parseFloat(window.getComputedStyle(textContainer).width);
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const titleText: Element = document.querySelector(elementClass)!;
 
         if (titleText?.scrollWidth > textContainerWidth) {
@@ -110,15 +112,19 @@ export class TvCardComponent implements OnInit, AfterViewChecked {
         const minutes = '0' + Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)).toString();
         const seconds = '0' + Math.floor((difference % (1000 * 60)) / 1000).toString();
 
-        //movie/tv series has released
+        //tv series has released
         if (difference / (1000 * 60 * 60 * 24) < 0) {
-            this.daysTilRelease = 'Released';
+            this.daysTilRelease = { releaseText: 'Released', confirmed: true };
+        }
+        //tv with no confirmed release date
+        else if (releaseDate.getFullYear() === 9999) {
+            this.daysTilRelease = { releaseText: this.tvData.status, confirmed: false };
         }
         //less than a day from release
         else if (difference / (1000 * 60 * 60 * 24) < 1) {
-            this.daysTilRelease = hours.slice(-2) + ' : ' + minutes.slice(-2) + ' : ' + seconds.slice(-2);
+            this.daysTilRelease = { releaseText: hours.slice(-2) + ' : ' + minutes.slice(-2) + ' : ' + seconds.slice(-2), confirmed: true };
         }
         //multiple days from release
-        else { this.daysTilRelease = days.toString(); }
+        else { this.daysTilRelease = { releaseText: days.toString(), confirmed: true }; }
     }
 }
