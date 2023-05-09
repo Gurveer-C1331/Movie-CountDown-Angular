@@ -12,11 +12,12 @@
                 
                 <span *ngIf="productionCompanies[0]; else elseProductionCompany" class="studio-text" id="studio-{{ movieData.id }}" [ngClass]="isStudioTextLong ? 'animate' : ''">
                     {{ productionCompanies[0].name }}</span>
-                <ng-template #elseProductionCompany><span></span></ng-template><br>
+                <ng-template #elseProductionCompany><span class="empty-block"></span></ng-template><br>
                 
-                <span *ngIf="movieData.genres.length > 1; else elseBlock" class="movie-genre-text">{{ movieData.genres[0].name + '/' + movieData.genres[1].name }}</span>
-                <ng-template #elseBlock>
-                    <span class="movie-genre-text">{{ movieData.genres[0].name }}</span>
+                <span *ngIf="movieData.genres.length > 1; else elseIfBlock" class="movie-genre-text">{{ movieData.genres[0].name + '/' + movieData.genres[1].name }}</span>
+                <ng-template #elseIfBlock>
+                    <span *ngIf="movieData.genres.length > 0; else elseBlock" class="movie-genre-text">{{ movieData.genres[0].name }}</span>
+                    <ng-template #elseBlock><span class="empty-block"></span></ng-template>
                 </ng-template>
             </div>
             <div class="middle no-hover">
@@ -24,19 +25,19 @@
                 <table>
                     <tbody>
                         <tr>
-                            <ng-container [ngSwitch]="daysTilRelease === 'Released' ? 1 : (daysTilRelease.includes(':') ? 2 : -1)">
+                            <ng-container [ngSwitch]="(daysTilRelease.releaseText === 'Released' || !daysTilRelease.confirmed)
+                            ? 1 : (daysTilRelease.releaseText.includes(':') ? 2 : -1)">
                                 <ng-container *ngSwitchCase="1">
-                                    <td class="days"
-                                    style="padding-bottom:.2em; padding-top:.2em; font-size:2em;">
-                                    <span>{{ daysTilRelease }}</span></td>
+                                    <td class="status-text">
+                                    <span>{{ daysTilRelease.releaseText }}</span></td>
                                 </ng-container>
                                 <ng-container *ngSwitchCase="2">
                                     <td class="days"
                                         style="padding-bottom:.2em; padding-top:.2em;">
-                                        <span>{{ daysTilRelease }}</span></td>
+                                        <span>{{ daysTilRelease.releaseText }}</span></td>
                                 </ng-container>
                                 <ng-container *ngSwitchDefault>
-                                    <td class="days"><span>{{ daysTilRelease }}</span></td>
+                                    <td class="days"><span>{{ daysTilRelease.releaseText }}</span></td>
                                     <td class="days-text"><span>Days</span></td>
                                 </ng-container>
                             </ng-container>
@@ -44,7 +45,8 @@
                         <tr>
                             <td colspan="2" class="date-text">
                                 <img src="assets/calendar.svg" alt="">
-                                <span>{{ releaseDate.toLocaleString('en-US', {dateStyle: 'medium'}).replace(',', '') }}</span>
+                                <span *ngIf="daysTilRelease.confirmed; else elseDate">{{ releaseDate.toLocaleString('en-US', {dateStyle: 'medium'}).replace(',', '') }}</span>
+                                <ng-template #elseDate><span>TBA</span></ng-template>
                             </td>
                         </tr>
                     </tbody>

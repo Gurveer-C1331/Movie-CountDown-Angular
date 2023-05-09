@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export class TVCardData {
     first_air_date: string;
     genres: Genre[];
@@ -14,6 +15,7 @@ export class TVCardData {
     poster_path: string;
     production_companies: ProductionCompany[];
     seasons: Season[];
+    status: string;
 }
 
 export class Genre {

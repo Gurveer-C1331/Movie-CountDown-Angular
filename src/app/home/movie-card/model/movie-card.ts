@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export class MovieCardData {
     genres: Genre[];
     id: number;
@@ -5,6 +6,7 @@ export class MovieCardData {
     poster_path: string;
     production_companies: ProductionCompany[];
     release_date: string;
+    status: string;
     title: string;
 }
 
