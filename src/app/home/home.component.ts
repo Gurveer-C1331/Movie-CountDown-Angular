@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { HomeService } from './home.service';
 import { CollectionService } from '../shared/collection.service';
@@ -59,6 +60,8 @@ export class HomeComponent implements OnInit {
     public cardsAscending = true;
 
     constructor(
+        private route: ActivatedRoute,
+        private router: Router,
         private homeService: HomeService,
         private collectionService: CollectionService) { }
 
@@ -114,6 +117,26 @@ export class HomeComponent implements OnInit {
                         this.cardData.push({ type: 'tv', releaseDate: tv.display_episode.air_date, name: tv.name, data: tv });
                     }
                 });
+
+                this.route.queryParamMap.subscribe(
+                    params => {
+                        const page = Number(params.get('page'));
+                        if (page > 0 && page <= Math.ceil(this.cardData.length / this.config.itemsPerPage)) {
+                            this.config.currentPage = Number(params.get('page'));
+                        }
+                        else {
+                            this.router.navigate(
+                                [],
+                                {
+                                    relativeTo: this.route,
+                                    queryParams: {page: 1},
+                                    queryParamsHandling: 'merge'
+                                }
+                            );
+                        }
+                    }
+                );
+
                 this.isMovieReady = true;
                 this.isTVReady = true;
                 this.cardData.sort(this.sortByRelease);
@@ -214,7 +237,31 @@ export class HomeComponent implements OnInit {
         if (this.filterType === 'All') { this.filterType = 'Movies'; }
         else if (this.filterType === 'Movies') { this.filterType = 'TV Series'; }
         else { this.filterType = 'All'; }
-        this.config.currentPage = 1;
+        this.router.navigate(
+            [],
+            {
+                relativeTo: this.route,
+                queryParams: {page: 1},
+                queryParamsHandling: 'merge'
+            }
+        );
+    }
+
+    /**
+     * Routes user to a different page
+     *
+     * @param page
+     */
+    public changePage(page: number) {
+
+        this.router.navigate(
+            [],
+            {
+                relativeTo: this.route,
+                queryParams: {page},
+                queryParamsHandling: 'merge'
+            }
+        );
     }
 
     /**
