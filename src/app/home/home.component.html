@@ -28,7 +28,7 @@
         </ng-container>
     </div>
     
-    <pagination-template #p="paginationApi" (pageChange)="config.currentPage = $event" [maxSize]="maxSize"
+    <pagination-template #p="paginationApi" (pageChange)="changePage($event)" [maxSize]="maxSize"
         *ngIf="(isMovieReady || isEmpty(movieCollection)) && (isTVReady || isEmpty(tvCollection)) && cardData.length > config.itemsPerPage">
         <div *ngIf="p.pages.length > 1" class="custom-pagination">
             <div class="pagination-previous" [class.disabled]="p.isFirstPage()">
