@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { DiscoverService } from './discover.service';
 import { CollectionService } from '../shared/collection.service';
@@ -26,9 +27,6 @@ export class DiscoverComponent implements OnInit {
     /** list of tv series data. */
     public tvData: DiscoverCardData[] = [];
 
-    /** if first set of movie data is loaded. */
-    public firstLoadComplete = false;
-
     /** if data is loaded. */
     public isReady = false;
 
@@ -55,6 +53,8 @@ export class DiscoverComponent implements OnInit {
     public faArrowRight = faAngleRight;
 
     constructor(
+        private route: ActivatedRoute,
+        private router: Router,
         private discoverService: DiscoverService,
         private collectionService: CollectionService) { }
 
@@ -65,28 +65,63 @@ export class DiscoverComponent implements OnInit {
         console.log(this.movieCollection);
         console.log(this.tvCollection);
 
-        this.discoverService.getUpcomingMovies(1).subscribe({
-            next: data => {
-                this.movieConfig.totalItems = data.total_results;
-                this.movieData = data.results;
-                this.isReady = true;
-                this.firstLoadComplete = true;
-            },
-            error: error => {
-                console.log(error);
-                this.isReady = true;
+        this.route.queryParamMap.subscribe(
+            params => {
+                if (String(params.get('type')) === 'movie' && Number(params.get('page'))) {
+                    this.toggleMovies = true;
+                    this.movieConfig.currentPage = Number(params.get('page'));
+                    this.getMoviePage(Number(params.get('page')));
+                }
+                else if (String(params.get('type')) === 'tv' && Number(params.get('page'))) {
+                    this.toggleMovies = false;
+                    this.tvConfig.currentPage = Number(params.get('page'));
+                    this.getTVPage(Number(params.get('page')));
+                }
+                else {
+                    this.router.navigate(
+                        [],
+                        {
+                            relativeTo: this.route,
+                            queryParams: {type: 'movie', page: 1},
+                            queryParamsHandling: 'merge'
+                        }
+                    );
+                }
             }
-        });
+        );
+    }
 
-        this.discoverService.getUpcomingTVSeries(1).subscribe({
-            next: data => {
-                this.tvConfig.totalItems = data.total_results;
-                this.tvData = data.results;
-            },
-            error: error => {
-                console.log(error);
-            }
-        });
+    /**
+     * Toggles between movie and tv sections.
+     *
+     * @param contentType - movie or tv
+     */
+    public toggleContent(contentType: string) {
+
+        if (contentType === 'movie') {
+            this.toggleMovies = true;
+            this.getMoviePage(this.movieConfig.currentPage);
+            this.router.navigate(
+                [],
+                {
+                    relativeTo: this.route,
+                    queryParams: {type: 'movie', page: this.movieConfig.currentPage},
+                    queryParamsHandling: 'merge'
+                }
+            );
+        }
+        else {
+            this.toggleMovies = false;
+            this.getTVPage(this.tvConfig.currentPage);
+            this.router.navigate(
+                [],
+                {
+                    relativeTo: this.route,
+                    queryParams: {type: 'tv', page: this.tvConfig.currentPage},
+                    queryParamsHandling: 'merge'
+                }
+            );
+        }
     }
 
     /**
@@ -102,6 +137,14 @@ export class DiscoverComponent implements OnInit {
                 this.movieConfig.currentPage = page;
                 this.movieConfig.totalItems = data.total_results;
                 this.movieData = data.results;
+                this.router.navigate(
+                    [],
+                    {
+                        relativeTo: this.route,
+                        queryParams: {type: 'movie', page: this.movieConfig.currentPage},
+                        queryParamsHandling: 'merge'
+                    }
+                );
                 this.isReady = true;
                 window.scrollTo(0, 0);
             },
@@ -126,6 +169,14 @@ export class DiscoverComponent implements OnInit {
                 this.tvConfig.currentPage = page;
                 this.tvConfig.totalItems = data.total_results;
                 this.tvData = data.results;
+                this.router.navigate(
+                    [],
+                    {
+                        relativeTo: this.route,
+                        queryParams: {type: 'tv', page: this.tvConfig.currentPage},
+                        queryParamsHandling: 'merge'
+                    }
+                );
                 this.isReady = true;
                 window.scrollTo(0, 0);
             },

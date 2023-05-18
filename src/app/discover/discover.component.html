@@ -2,8 +2,8 @@
     <h1>Discover</h1>
     <p>Explore and find the latest movies and tv series to add to your collection.</p>
     <div class="toggle-container">
-        <span id="toggle-movie" (click)="toggleMovies = true" [ngClass]="{'current': toggleMovies}">Movie</span>
-        <span  id="toggle-tv" (click)="toggleMovies = false" [ngClass]="{'current': !toggleMovies}">TV</span> 
+        <span id="toggle-movie" (click)="toggleContent('movie')" [ngClass]="{'current': toggleMovies}">Movie</span>
+        <span  id="toggle-tv" (click)="toggleContent('tv')" [ngClass]="{'current': !toggleMovies}">TV</span> 
     </div>
 </div>
 
@@ -13,13 +13,13 @@
 
 
 <div id="results-container">
-    <ng-container *ngIf="toggleMovies">
+    <ng-container *ngIf="toggleMovies && isReady">
         <ng-container *ngFor="let movie of movieData | paginate: movieConfig">
             <app-discover-card [cardType]="'movie'" [cardData]="movie" [inCollection]="movieCollection.includes(movie.id.toString())"
                 (added)="onAddMovie($event)" (removed)="onRemoveMovie($event)"></app-discover-card>
         </ng-container>
     </ng-container> 
-    <ng-container *ngIf="!toggleMovies">
+    <ng-container *ngIf="!toggleMovies && isReady">
         <ng-container *ngFor="let tv of tvData | paginate: tvConfig">
             <app-discover-card [cardType]="'tv'" [cardData]="tv" [inCollection]="tvCollection.includes(tv.id.toString())"
                 (added)="onAddTV($event)" (removed)="onRemoveTV($event)"></app-discover-card>
@@ -27,7 +27,7 @@
     </ng-container>
 </div>
 
-<pagination-template #p="paginationApi" id="moviePagination" *ngIf="firstLoadComplete && toggleMovies" (pageChange)="getMoviePage($event)" [maxSize]="maxSize">
+<pagination-template #p="paginationApi" id="moviePagination" *ngIf="toggleMovies && isReady" (pageChange)="getMoviePage($event)" [maxSize]="maxSize">
     <div *ngIf="p.pages.length > 1" class="custom-pagination">
         <div class="pagination-previous" [class.disabled]="p.isFirstPage()">
             <a *ngIf="!p.isFirstPage()" (click)="p.previous()">
@@ -50,7 +50,7 @@
     </div>
 </pagination-template>
 
-<pagination-template #p="paginationApi" id="tvPagination" *ngIf="!toggleMovies" (pageChange)="getTVPage($event)" [maxSize]="maxSize">
+<pagination-template #p="paginationApi" id="tvPagination" *ngIf="!toggleMovies && isReady" (pageChange)="getTVPage($event)" [maxSize]="maxSize">
     <div *ngIf="p.pages.length > 1" class="custom-pagination">
         <div class="pagination-previous" [class.disabled]="p.isFirstPage()">
             <a *ngIf="!p.isFirstPage()" (click)="p.previous()">
