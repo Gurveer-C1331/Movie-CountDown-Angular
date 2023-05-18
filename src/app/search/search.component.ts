@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { SearchService } from './search.service';
 import { CollectionService } from '../shared/collection.service';
@@ -43,7 +43,9 @@ export class SearchComponent implements OnInit {
     public faArrowLeft = faAngleLeft;
     public faArrowRight = faAngleRight;
 
-    constructor(private route: ActivatedRoute,
+    constructor(
+        private route: ActivatedRoute,
+        private router: Router,
         private searchSerivce: SearchService,
         private collectionService: CollectionService) { }
 
@@ -83,23 +85,30 @@ export class SearchComponent implements OnInit {
                                 data.tv.media_type = 'tv';
                                 this.searchResultData.push(data.tv);
                             }
+                            this.router.navigate(
+                                [],
+                                {
+                                    relativeTo: this.route,
+                                    queryParams: {page: 1},
+                                    queryParamsHandling: 'merge'
+                                }
+                            );
                             this.isReady = true;
                         }
                     );
                 }
+                else if (Number(params.get('page'))) {
+                    this.getSearchPage(Number(params.get('page')));
+                }
                 else {
-                    this.searchSerivce.getSearchResults(this.searchString, 1).subscribe({
-                        next: data => {
-                            console.log(data.results);
-                            this.config.totalItems = data.total_results;
-                            this.searchResultData = data.results;
-                            this.isReady = true;
-                        },
-                        error: error => {
-                            console.log(error);
-                            this.isReady = true;
+                    this.router.navigate(
+                        [],
+                        {
+                            relativeTo: this.route,
+                            queryParams: {page: 1},
+                            queryParamsHandling: 'merge'
                         }
-                    });
+                    );
                 }
             }
         );
@@ -115,10 +124,22 @@ export class SearchComponent implements OnInit {
         this.isReady = false;
         this.searchSerivce.getSearchResults(this.searchString, page).subscribe({
             next: data => {
+                //redirect to page 1 if page parameter is out of bounds
+                if (page > Math.ceil(data.total_results / 20)) {
+                    page = 1;
+                }
                 this.config.currentPage = page;
                 this.config.totalItems = data.total_results;
                 this.searchResultData = data.results;
                 console.log(this.searchResultData);
+                this.router.navigate(
+                    [],
+                    {
+                        relativeTo: this.route,
+                        queryParams: {page},
+                        queryParamsHandling: 'merge'
+                    }
+                );
                 this.isReady = true;
                 window.scrollTo(0, 0);
             },

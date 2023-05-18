@@ -20,7 +20,7 @@ export class AppComponent {
     public faSearch = faMagnifyingGlass;
 
     /** search string entered by the user. */
-    public searchString = { q : ''};
+    public searchString = { q : '', page : 1};
 
     constructor(public router: Router) { }
 
@@ -43,8 +43,9 @@ export class AppComponent {
 
         if (this.searchString.q) {
             this.router.navigate(
-            ['/search'],
-            { queryParams: this.searchString });
+                ['/search'],
+                { queryParams: this.searchString }
+            );
 
             this.searchString.q = '';
             this.searchBar.nativeElement.blur();
