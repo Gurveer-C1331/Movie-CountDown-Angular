@@ -3,7 +3,7 @@
     <nav>
     <div class="links-container">
         <a routerLink="/home" routerLinkActive="active-link" id="home-btn">Home</a>
-        <a routerLink="/discover" routerLinkActive="active-link" id="discover-btn">Discover</a>
+        <a routerLink="/discover" [queryParams]="{type: 'movie', page: 1}" [class.active-link]="isLinkActive('/discover')" id="discover-btn">Discover</a>
     </div>
     <div class="search-container">
         <div>

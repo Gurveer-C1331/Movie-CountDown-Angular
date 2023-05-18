@@ -25,6 +25,18 @@ export class AppComponent {
     constructor(public router: Router) { }
 
     /**
+     * Checks if the link is active.
+     *
+     * @param url - url string
+     * @returns whether or not the link is active
+     */
+    public isLinkActive(url: string): boolean {
+        const queryParamsIndex = this.router.url.indexOf('?');
+        const baseUrl = queryParamsIndex === -1 ? this.router.url : this.router.url.slice(0, queryParamsIndex);
+        return baseUrl === url;
+    }
+
+    /**
      * Route user to the Search results page and reset searchString.
      */
     public onSearch(): void {
