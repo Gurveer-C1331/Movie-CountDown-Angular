@@ -69,12 +69,10 @@ export class DiscoverComponent implements OnInit {
             params => {
                 if (String(params.get('type')) === 'movie' && Number(params.get('page'))) {
                     this.toggleMovies = true;
-                    this.movieConfig.currentPage = Number(params.get('page'));
                     this.getMoviePage(Number(params.get('page')));
                 }
                 else if (String(params.get('type')) === 'tv' && Number(params.get('page'))) {
                     this.toggleMovies = false;
-                    this.tvConfig.currentPage = Number(params.get('page'));
                     this.getTVPage(Number(params.get('page')));
                 }
                 else {
@@ -101,26 +99,10 @@ export class DiscoverComponent implements OnInit {
         if (contentType === 'movie') {
             this.toggleMovies = true;
             this.getMoviePage(this.movieConfig.currentPage);
-            this.router.navigate(
-                [],
-                {
-                    relativeTo: this.route,
-                    queryParams: {type: 'movie', page: this.movieConfig.currentPage},
-                    queryParamsHandling: 'merge'
-                }
-            );
         }
         else {
             this.toggleMovies = false;
             this.getTVPage(this.tvConfig.currentPage);
-            this.router.navigate(
-                [],
-                {
-                    relativeTo: this.route,
-                    queryParams: {type: 'tv', page: this.tvConfig.currentPage},
-                    queryParamsHandling: 'merge'
-                }
-            );
         }
     }
 
@@ -134,6 +116,10 @@ export class DiscoverComponent implements OnInit {
         this.isReady = false;
         this.discoverService.getUpcomingMovies(page).subscribe({
             next: data => {
+                //redirect to page 1 if page parameter is out of bounds
+                if (page > Math.ceil(data.total_results / 20)) {
+                    page = 1;
+                }
                 this.movieConfig.currentPage = page;
                 this.movieConfig.totalItems = data.total_results;
                 this.movieData = data.results;
@@ -166,6 +152,10 @@ export class DiscoverComponent implements OnInit {
         this.isReady = false;
         this.discoverService.getUpcomingTVSeries(page).subscribe({
             next: data => {
+                //redirect to page 1 if page parameter is out of bounds
+                if (page > Math.ceil(data.total_results / 20)) {
+                    page = 1;
+                }
                 this.tvConfig.currentPage = page;
                 this.tvConfig.totalItems = data.total_results;
                 this.tvData = data.results;
