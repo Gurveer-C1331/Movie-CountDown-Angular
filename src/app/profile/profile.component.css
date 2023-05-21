@@ -1,0 +1,127 @@
+#info-text {
+    margin-bottom: 2em;
+}
+
+h1, h2 {
+    margin-bottom: .4em;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+}
+
+h2 {
+    margin-bottom: .6em;
+}
+
+#info-text span {
+    display: flex;
+    justify-content: center;
+    color: #666666;
+}
+
+#main-container {
+    display: grid;
+    justify-content: center;
+}
+
+#export-btn {
+    display: block;
+    cursor: pointer;
+    padding: .4em 1em;
+    border-radius: 20px;
+    background-color: #000;
+    color: #FFF;
+    text-decoration: none;
+    text-align: center;
+    font-weight: 500;
+}
+
+hr {
+    margin: 1.5em;
+    border-top: 2px solid #f8f8f8;
+    border-radius: 5px;
+}
+
+#movie-label, #tv-label {
+    display: inline-block;
+    margin-bottom: .5em;
+}
+
+#tv-label {
+    margin-top: 1em;
+}
+
+#movie-import, #tv-import {
+    display: flex;
+}
+
+#movie-import div, #tv-import div {
+    position: relative;
+}
+
+.import-bar {
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    background-color: #f8f8f8;
+    padding: 0.5em 2.5em 0.5em 1em;
+    font-size: 1em;
+}
+
+.clear-btn {
+    position: absolute;
+    right: 0;
+    padding: .5em 1em .5em .5em;
+    cursor: pointer;
+    color: #666666;
+}
+
+.submit-btn {
+    vertical-align: text-bottom;
+    margin-left: .5em;
+    cursor: pointer;
+    font-size: 1.68em;
+}
+
+#message-container {
+    padding: 1em;
+    margin: 1em auto;
+    width: fit-content;
+    border-radius: 20px;
+    background-color: #ACE1AF;
+    text-align: center;
+}
+
+#bottom-container {
+    margin-bottom: 3em;
+}
+
+@media (min-width: 2000px) {
+    #info-text, #main-container, #message-container {
+        font-size: 1.3em;
+    }
+}
+
+@media (max-width: 760px) {
+  #results-container {
+    font-size: .9em;
+  }
+}
+
+@media (max-width: 725px) {
+    #info-text, #main-container, #message-container {
+        font-size: .9em;
+    }
+}
+
+@media (max-width: 500px) {
+  #info-text, #main-container, #message-container {
+    margin-bottom: .5em;
+  }
+}
+
+@media (max-width: 350px) {
+    #info-text, #main-container, #message-container {
+        font-size: .8em;
+    }
+}

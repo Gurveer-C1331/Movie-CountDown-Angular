@@ -1,0 +1,43 @@
+<div id='info-text'>
+    <h1>Profile</h1>
+    <span>Export or Import your collection</span>
+</div>
+
+<div class="container" id="main-container" [ngClass]="{'bottom-container': message === ''}">
+    <div id="export-container">
+        <h2>Export</h2>
+        <a href="" id="export-btn" #exportBtn>Export</a>
+    </div>
+
+    <hr>
+
+    <div id="import-container">
+        <h2>Import</h2>
+        <span id="movie-label">Movie</span>
+        <div id="movie-import">
+            <div>
+                <input type="text" placeholder="Import" #importBar ngClass="import-bar" [(ngModel)]="importMovieText"
+                    (keydown.enter)="onImport('movie')">
+                <fa-icon *ngIf="importMovieText !== ''" [icon]="faClear" class="clear-btn" (click)="importMovieText = ''"></fa-icon>
+            </div>
+            <fa-icon [icon]="faAdd" class="submit-btn" (click)="onImport('movie')"></fa-icon>  
+        </div>
+
+        <span id="tv-label">TV</span>
+        <div id="tv-import">
+            <div>
+                <input type="text" placeholder="Import" #importBar class="import-bar" [(ngModel)]="importTVText"
+                (keydown.enter)="onImport('tv')">
+                <fa-icon *ngIf="importTVText !== ''" [icon]="faClear" class="clear-btn" (click)="importTVText = ''"></fa-icon>
+            </div>
+            <fa-icon [icon]="faAdd" class="submit-btn" (click)="onImport('tv')"></fa-icon>  
+        </div>
+        
+    </div>
+</div>
+
+<div *ngIf="message !== ''" id="message-container" [ngClass]="{'bottom-container': message !== ''}">
+    <span id="message">{{ message }}</span>
+</div>
+
+<div id="bottom-container"></div>
