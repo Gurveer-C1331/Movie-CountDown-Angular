@@ -11,6 +11,9 @@ const routes: Routes = [
     { path: 'search',
         loadChildren: () => import('./search/search.module').then(m => m.SearchModule)
     },
+    { path: 'secret/profile',
+        loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule)
+    },
     { path: '**', redirectTo: 'home' }
 ];
 
