@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Input, Output, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, AfterViewChecked, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { interval } from 'rxjs';
 
 import { MovieCardData, ProductionCompany } from './model/movie-card';
@@ -8,7 +8,7 @@ import { MovieCardData, ProductionCompany } from './model/movie-card';
     templateUrl: './movie-card.component.html',
     styleUrls: ['./movie-card.component.css']
 })
-export class MovieCardComponent implements OnInit, AfterViewChecked {
+export class MovieCardComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     /** Movie card data. */
     @Input() public movieData: MovieCardData;
@@ -66,7 +66,7 @@ export class MovieCardComponent implements OnInit, AfterViewChecked {
         }
     }
 
-    ngOnDelete(): void {
+    ngOnDestroy(): void {
 
         this.refreshCountDown.unsubscribe();
     }
