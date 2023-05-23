@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { HomeService } from './home.service';
@@ -6,7 +6,7 @@ import { CollectionService } from '../shared/collection.service';
 import { MovieCardData } from './movie-card/model/movie-card';
 import { Episode, TVCardData } from './tv-card/model/tv-card';
 import { DisplayData } from './model/display-data';
-import { forkJoin, catchError, of, Observable } from 'rxjs';
+import { forkJoin, catchError, of, Observable, Subscription } from 'rxjs';
 import {PaginationInstance} from 'ngx-pagination';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
@@ -19,7 +19,7 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons';
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
     /** list of movie ids. */
     public movieCollection: string[];
@@ -59,6 +59,10 @@ export class HomeComponent implements OnInit {
     /** sort cards in ascending order. */
     public cardsAscending = true;
 
+    /** subscriptions. */
+    private contentApiSubscription: Subscription;
+    private queryParamSubscription: Subscription;
+
     constructor(
         private route: ActivatedRoute,
         private router: Router,
@@ -86,7 +90,7 @@ export class HomeComponent implements OnInit {
             });
         }
 
-        forkJoin(calls)
+        this.contentApiSubscription = forkJoin(calls)
         .subscribe(
             data => {
                 Object.keys(data).forEach(key => {
@@ -118,7 +122,7 @@ export class HomeComponent implements OnInit {
                     }
                 });
 
-                this.route.queryParamMap.subscribe(
+                this.queryParamSubscription = this.route.queryParamMap.subscribe(
                     params => {
                         const page = Number(params.get('page'));
                         if (page > 0 && page <= Math.ceil(this.cardData.length / this.config.itemsPerPage)) {
@@ -146,6 +150,12 @@ export class HomeComponent implements OnInit {
                 this.displayNotifications(titles);
             }
         );
+    }
+
+    ngOnDestroy(): void {
+
+        this.contentApiSubscription.unsubscribe();
+        this.queryParamSubscription.unsubscribe();
     }
 
     /**
@@ -262,6 +272,7 @@ export class HomeComponent implements OnInit {
                 queryParamsHandling: 'merge'
             }
         );
+        window.scroll(0, 0);
     }
 
     /**

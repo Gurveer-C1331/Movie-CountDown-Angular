@@ -2,7 +2,7 @@
     <h1 id="logo">Movie CountDown</h1>
     <nav>
     <div class="links-container">
-        <a routerLink="/home" routerLinkActive="active-link" id="home-btn">Home</a>
+        <a routerLink="/home" [queryParams]="{page: 1}" [class.active-link]="isLinkActive('/home')" id="home-btn">Home</a>
         <a routerLink="/discover" [queryParams]="{type: 'movie', page: 1}" [class.active-link]="isLinkActive('/discover')" id="discover-btn">Discover</a>
     </div>
     <div class="search-container">
