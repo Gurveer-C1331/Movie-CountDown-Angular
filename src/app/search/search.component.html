@@ -1,6 +1,11 @@
+<div class="results-info">
+    <h1>"{{ searchString }}"</h1>
+    <p *ngIf="isReady">{{ this.config.totalItems }} results found</p>
+</div>
+
 <div *ngIf="!isReady" class="loader-container">
     <app-loader></app-loader> 
- </div>
+</div>
 
 <div id="results-container">
     <ng-container *ngFor="let content of searchResultData | paginate: config">
