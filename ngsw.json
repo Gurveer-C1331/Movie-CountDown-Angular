@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1684885090747,
+  "timestamp": 1684891189426,
   "index": "/Movie-CountDown-Angular/index.html",
   "assetGroups": [
     {
@@ -18,7 +18,7 @@
         "/Movie-CountDown-Angular/70.d592dcc856149954.js",
         "/Movie-CountDown-Angular/favicon.ico",
         "/Movie-CountDown-Angular/index.html",
-        "/Movie-CountDown-Angular/main.17ba16f07c9257b5.js",
+        "/Movie-CountDown-Angular/main.e84482a79af5c41b.js",
         "/Movie-CountDown-Angular/manifest.webmanifest",
         "/Movie-CountDown-Angular/polyfills.9162e8888958b6f0.js",
         "/Movie-CountDown-Angular/runtime.a9b52928b95161e4.js",
@@ -82,8 +82,8 @@
     "/Movie-CountDown-Angular/assets/tv.svg": "44c55d8aa5ef8f89cb9573ef155509a734904081",
     "/Movie-CountDown-Angular/assets/x.svg": "0fb6937026716d85d64eca4067d6fe7db82fa362",
     "/Movie-CountDown-Angular/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
-    "/Movie-CountDown-Angular/index.html": "721d4c08cfd45053711800015ce54ef71d6f0cdc",
-    "/Movie-CountDown-Angular/main.17ba16f07c9257b5.js": "db30a8210c84feb52468a014b433a4912a757313",
+    "/Movie-CountDown-Angular/index.html": "01bab325ef27677ef234e44cc0491074f1931356",
+    "/Movie-CountDown-Angular/main.e84482a79af5c41b.js": "37e966cc4c816a3176187a5f41012c7853ae4506",
     "/Movie-CountDown-Angular/manifest.webmanifest": "bcb80908ddbf6db6dff72cdee266593ad8bc40f2",
     "/Movie-CountDown-Angular/polyfills.9162e8888958b6f0.js": "42501049a98c205815efba5cde8b5cd62fed00e5",
     "/Movie-CountDown-Angular/runtime.a9b52928b95161e4.js": "49b75db4a5a0172cf5962815cac8ca7511870c0f",
