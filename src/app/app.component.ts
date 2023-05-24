@@ -47,7 +47,7 @@ export class AppComponent {
                 { queryParams: this.searchString }
             );
 
-            //this.searchString.q = '';
+            this.searchString.q = '';
             this.searchBar.nativeElement.blur();
         }
     }
